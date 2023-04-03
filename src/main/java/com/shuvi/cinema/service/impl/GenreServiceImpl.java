@@ -5,15 +5,16 @@ import com.shuvi.cinema.controller.dto.genre.GenreResponse;
 import com.shuvi.cinema.entity.GenreEntity;
 import com.shuvi.cinema.mapper.GenreMapper;
 import com.shuvi.cinema.repository.GenreRepository;
+import com.shuvi.cinema.service.api.GenreService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import com.shuvi.cinema.service.api.GenreService;
 
 /**
  * @author Shuvi
  */
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {

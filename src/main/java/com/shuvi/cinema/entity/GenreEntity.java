@@ -1,15 +1,14 @@
 package com.shuvi.cinema.entity;
 
-import lombok.Setter;
-import lombok.Getter;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import java.util.UUID;
 
 /**
@@ -26,7 +25,7 @@ public class GenreEntity {
     @Column(length = 16, unique = true, nullable = false)
     private UUID id = UUID.randomUUID();
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
