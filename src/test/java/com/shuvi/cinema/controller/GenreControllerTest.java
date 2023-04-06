@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,9 +27,8 @@ class GenreControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-
     @Test
-    void createGenre() throws Exception {
+    void testCreateGenre() throws Exception {
         String urlTemplate = "/genre";
         String genreName = "funny";
         String genreDescription = "Funny genre.";
@@ -49,7 +49,7 @@ class GenreControllerTest {
     }
 
     @Test
-    void createGenreWithBlankNameAndDescription() throws Exception {
+    void testCreateGenreWithBlankNameAndDescription() throws Exception {
         String urlTemplate = "/genre";
         String genreName = "";
         String genreDescription = "";
@@ -65,5 +65,11 @@ class GenreControllerTest {
                         .content(body))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testFindGenreByNotExistId() throws Exception {
+        String urlTemplate = "/genre/3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        this.mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(status().isNotFound());
     }
 }
