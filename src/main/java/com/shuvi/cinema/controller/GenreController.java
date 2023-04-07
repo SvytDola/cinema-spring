@@ -20,20 +20,18 @@ import java.util.UUID;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("genre")
+@RequestMapping("/genre")
 public class GenreController {
 
     private final GenreService genreService;
 
-    @PostMapping
+    @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Запрос на содание жанра.")
     public GenreResponse createGenre(@RequestBody @Valid GenreCreateRequest createRequest) {
         return genreService.createGenre(createRequest);
     }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Получение жанра по идентификатору.")
     public GenreResponse findById(@NonNull @PathVariable UUID id) {
         return genreService.findById(id);
