@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Shuvi
  */
 @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Genre not found.")
-public class GenreNotFound extends RuntimeException {
+public class GenreNotFound extends BaseException {
 }
