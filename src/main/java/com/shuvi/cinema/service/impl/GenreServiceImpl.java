@@ -37,4 +37,9 @@ public class GenreServiceImpl implements GenreService {
         GenreEntity genreEntity = genreRepository.findById(id).orElseThrow(GenreNotFound::new);
         return genreMapper.toResponse(genreEntity);
     }
+
+    @Override
+    public void deleteById(@NonNull UUID id) {
+        genreRepository.deleteById(id);
+    }
 }
