@@ -39,7 +39,7 @@ public class GenreController {
 
     private final GenreService genreService;
 
-    @PostMapping("/")
+    @PostMapping
     @ResponseStatus(CREATED)
     @Operation(summary = "Запрос на содание жанра.")
     public GenreResponse createGenre(@RequestBody @Valid GenreCreateRequest createRequest) {
