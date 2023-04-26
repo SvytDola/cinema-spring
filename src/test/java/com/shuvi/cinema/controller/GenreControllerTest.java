@@ -3,6 +3,8 @@ package com.shuvi.cinema.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.genre.GenreCreateRequest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,11 +29,23 @@ class GenreControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
+    @ParameterizedTest
+    @CsvFileSource(resources = "/data/genre.csv", numLinesToSkip = 1)
+    void getGenreById(String uuid, String name, String description) throws Exception {
+        String urlTemplate = "/genre/" + uuid;
+
+        this.mockMvc.perform(get(urlTemplate))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(name)))
+                .andExpect(jsonPath("$.description", equalTo(description)));
+
+    }
+
     @Test
     void testCreateGenre() throws Exception {
         String urlTemplate = "/genre";
-        String genreName = "funny";
-        String genreDescription = "Funny genre.";
+        String genreName = "sad";
+        String genreDescription = "Sad genre.";
         GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(genreName)
                 .description(genreDescription)
