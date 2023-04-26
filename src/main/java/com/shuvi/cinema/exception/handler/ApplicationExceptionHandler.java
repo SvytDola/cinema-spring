@@ -21,7 +21,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         ResponseStatus responseStatus = ex.getClass().getAnnotation(ResponseStatus.class);
         String message = responseStatus.reason();
         int status = responseStatus.code().value();
-        ApiError apiError = new ApiError(message, status);
+        ApiError apiError = new ApiError(message);
         return ResponseEntity.status(status).body(apiError);
     }
 }

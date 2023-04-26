@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -35,13 +34,23 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreResponse findById(@NonNull UUID id) {
-        Optional<GenreEntity> genreEntity = genreRepository.findById(id);
-        if (genreEntity.isEmpty()) throw new GenreNotFound();
-        return genreMapper.toResponse(genreEntity.get());
+        GenreEntity genreEntity = genreRepository.findById(id).orElseThrow(GenreNotFound::new);
+        return genreMapper.toResponse(genreEntity);
     }
 
     @Override
     public void deleteById(@NonNull UUID id) {
         genreRepository.deleteById(id);
+    }
+
+    @Override
+    public GenreResponse update(UUID id, GenreCreateRequest body) {
+        GenreEntity genreEntityFromDb = genreRepository.findById(id).orElseThrow(GenreNotFound::new);
+        GenreEntity genreEntityUpdate = genreMapper.toEntity(id, body);
+
+        genreMapper.update(genreEntityFromDb, genreEntityUpdate);
+
+        GenreEntity genreEntityUpdated = genreRepository.save(genreEntityFromDb);
+        return genreMapper.toResponse(genreEntityUpdated);
     }
 }

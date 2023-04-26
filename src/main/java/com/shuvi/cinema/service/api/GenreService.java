@@ -15,4 +15,6 @@ public interface GenreService {
     GenreResponse findById(@NonNull UUID id);
 
     void deleteById(@NonNull UUID id);
+
+    GenreResponse update(UUID id, GenreCreateRequest body);
 }
