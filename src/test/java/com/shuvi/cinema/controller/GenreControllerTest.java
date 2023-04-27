@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -148,5 +149,60 @@ class GenreControllerTest {
 
         updateGenreById(genreResponse.getId().toString(), updateGenreName, updateGenreDescription);
 
+    }
+
+    @Test
+    void testCreateGenreWithNotUniqueName() throws Exception {
+        String name = "unique";
+        String description = "desc";
+
+        createGenre(name, description);
+
+        String urlTemplate = "/genre";
+
+        GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
+                .name(name)
+                .description(description)
+                .build();
+
+        String body = mapper.writeValueAsString(genreCreateRequest);
+
+        this.mockMvc.perform(post(urlTemplate)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    void testDeleteGenreById() throws Exception {
+        String name = "delete";
+        String description = "desc";
+
+        GenreResponse genreCreated = createGenre(name, description);
+
+        String urlTemplate = "/genre/" + genreCreated.getId();
+
+        mockMvc.perform(delete(urlTemplate))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testDeleteGenreByNotExistId() throws Exception {
+        String urlTemplate = "/genre/3fa85f64-5717-4562-b3fc-2c963f66afa6";
+
+        mockMvc.perform(delete(urlTemplate))
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    void testDeleteGenreByNotValidId() throws Exception {
+        String urlTemplate = "/genre/-1";
+
+        mockMvc.perform(delete(urlTemplate))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }
