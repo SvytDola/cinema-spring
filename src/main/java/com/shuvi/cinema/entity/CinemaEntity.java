@@ -1,5 +1,6 @@
 package com.shuvi.cinema.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,32 +10,30 @@ import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Сущность жанра.
- *
- * @author Shuvi
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "genres")
-public class GenreEntity {
+@Table(name = "cinemas")
+public class CinemaEntity {
+
     @Id
     @Column(length = 16, unique = true, nullable = false)
     private UUID id = UUID.randomUUID();
 
-    @Column(nullable = false, unique = true)
+    @Column(length = 255, unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(unique = false, nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    private long duration;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "cinemas_genres",
-            joinColumns = @JoinColumn(name = "genre_id"),
-            inverseJoinColumns = @JoinColumn(name = "cinema_id"))
-    private Set<CinemaEntity> cinemas;
-
+            joinColumns = @JoinColumn(name = "cinema_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private Set<GenreEntity> genres;
 }

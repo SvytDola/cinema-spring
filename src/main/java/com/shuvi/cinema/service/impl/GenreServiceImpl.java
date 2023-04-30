@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -52,5 +54,16 @@ public class GenreServiceImpl implements GenreService {
 
         GenreEntity genreEntityUpdated = genreRepository.save(genreEntityFromDb);
         return genreMapper.toResponse(genreEntityUpdated);
+    }
+
+    @Override
+    public List<GenreResponse> findAll() {
+        List<GenreEntity> genreEntities = genreRepository.findAll();
+        return genreMapper.toResponseList(genreEntities);
+    }
+
+    @Override
+    public Set<GenreEntity> findAllByIds(Set<UUID> uuids) {
+        return genreRepository.findByIdIn(uuids);
     }
 }

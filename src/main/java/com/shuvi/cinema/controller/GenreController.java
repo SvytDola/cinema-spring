@@ -12,29 +12,25 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
+import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 /**
+ * Контроллер API сущности "Genre".
+ *
  * @author Shuvi
  */
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/genre")
+@RequestMapping(GENRE_API_PATH)
 public class GenreController {
 
     private final GenreService genreService;
@@ -46,7 +42,7 @@ public class GenreController {
                     mediaType = APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = GenreResponse.class)
             )),
-            @ApiResponse(responseCode = "500",
+            @ApiResponse(responseCode = "409",
                     description = "Если создать жанр с неуникальным именем.",
                     content = @Content(
                             mediaType = APPLICATION_JSON_VALUE,
@@ -93,7 +89,7 @@ public class GenreController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление жанра по идентификатору.", responses = {
             @ApiResponse(responseCode = "204", description = "Ok.", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "500",
+            @ApiResponse(responseCode = "404",
                     content = @Content(
                             mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ApiError.class)),
@@ -128,7 +124,7 @@ public class GenreController {
             @ApiResponse(responseCode = "400", description = "При не валидном идентификаторе.",
                     content = @Content(schema = @Schema())
             ),
-            @ApiResponse(responseCode = "500",
+            @ApiResponse(responseCode = "409",
                     description = "Если создать жанр с неуникальным именем.",
                     content = @Content(
                             mediaType = APPLICATION_JSON_VALUE,
@@ -137,5 +133,11 @@ public class GenreController {
     })
     public GenreResponse update(@PathVariable UUID id, @Valid @RequestBody GenreCreateRequest body) {
         return genreService.update(id, body);
+    }
+
+    @GetMapping
+    @Operation(summary = "Возвращает список жанров.")
+    public List<GenreResponse> findAll() {
+        return genreService.findAll();
     }
 }

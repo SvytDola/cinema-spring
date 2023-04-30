@@ -3,6 +3,7 @@ package com.shuvi.cinema.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.genre.GenreCreateRequest;
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -11,15 +12,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
+import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 
 @SpringBootTest
@@ -32,10 +33,24 @@ class GenreControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @BeforeEach
+    public void initMockWvc() {
+        mockMvc = webAppContextSetup(webApplicationContext)
+                .addFilter(((request, response, chain) -> {
+                    String charsetUtf8 = "UTF-8";
+                    request.setCharacterEncoding(charsetUtf8);
+                    response.setCharacterEncoding(charsetUtf8);
+                    chain.doFilter(request, response);
+                })).build();
+    }
+
     @ParameterizedTest
     @CsvFileSource(resources = "/db/changelog/v1.0.0/dml/data/genre.csv", numLinesToSkip = 1)
     void getGenreById(String uuid, String name, String description) throws Exception {
-        String urlTemplate = "/genre/" + uuid;
+        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, uuid);
 
         this.mockMvc.perform(get(urlTemplate))
                 .andDo(print())
@@ -48,7 +63,6 @@ class GenreControllerTest {
 
     @Test
     void testCreateGenre() throws Exception {
-        String urlTemplate = "/genre";
         String genreName = "sad";
         String genreDescription = "Sad genre.";
         GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
@@ -58,7 +72,7 @@ class GenreControllerTest {
 
         String body = mapper.writeValueAsString(genreCreateRequest);
 
-        this.mockMvc.perform(post(urlTemplate)
+        this.mockMvc.perform(post(GENRE_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
@@ -69,7 +83,6 @@ class GenreControllerTest {
 
     @Test
     void testCreateGenreWithBlankNameAndDescription() throws Exception {
-        String urlTemplate = "/genre";
         String genreName = "";
         String genreDescription = "";
         GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
@@ -79,7 +92,7 @@ class GenreControllerTest {
 
         String body = mapper.writeValueAsString(genreCreateRequest);
 
-        mockMvc.perform(post(urlTemplate)
+        mockMvc.perform(post(GENRE_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
@@ -88,7 +101,7 @@ class GenreControllerTest {
 
     @Test
     void testFindGenreByNotExistId() throws Exception {
-        String urlTemplate = "/genre/3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
         mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(status().isNotFound());
     }
 
@@ -100,7 +113,7 @@ class GenreControllerTest {
                 .build();
         String body = mapper.writeValueAsString(genreCreateRequest);
         return mapper.readValue(
-                mockMvc.perform(post("/genre")
+                mockMvc.perform(post(GENRE_API_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body)
                         )
@@ -121,7 +134,7 @@ class GenreControllerTest {
 
         String body = mapper.writeValueAsString(genreCreateRequest);
 
-        String urlTemplate = "/genre/" + id;
+        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, id);
 
         String response = mockMvc.perform(put(urlTemplate)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -158,8 +171,6 @@ class GenreControllerTest {
 
         createGenre(name, description);
 
-        String urlTemplate = "/genre";
-
         GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(name)
                 .description(description)
@@ -167,11 +178,11 @@ class GenreControllerTest {
 
         String body = mapper.writeValueAsString(genreCreateRequest);
 
-        this.mockMvc.perform(post(urlTemplate)
+        this.mockMvc.perform(post(GENRE_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -181,7 +192,7 @@ class GenreControllerTest {
 
         GenreResponse genreCreated = createGenre(name, description);
 
-        String urlTemplate = "/genre/" + genreCreated.getId();
+        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, genreCreated.getId());
 
         mockMvc.perform(delete(urlTemplate))
                 .andDo(print())
@@ -190,16 +201,15 @@ class GenreControllerTest {
 
     @Test
     void testDeleteGenreByNotExistId() throws Exception {
-        String urlTemplate = "/genre/3fa85f64-5717-4562-b3fc-2c963f66afa6";
-
+        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
         mockMvc.perform(delete(urlTemplate))
                 .andDo(print())
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isNotFound());
     }
 
     @Test
     void testDeleteGenreByNotValidId() throws Exception {
-        String urlTemplate = "/genre/-1";
+        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "-1");
 
         mockMvc.perform(delete(urlTemplate))
                 .andDo(print())

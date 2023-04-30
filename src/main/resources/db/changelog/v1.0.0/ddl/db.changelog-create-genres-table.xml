@@ -13,8 +13,19 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="description" type="varchar">
-                <constraints unique="false" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet author="shuvi"
+               id="add-fk-column-genre-id-on-cinemas-genres">
+        <addColumn tableName="cinemas_genres">
+            <column name="genre_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_genre_id_on_cinemas_genres"
+                             references="genres(id)"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

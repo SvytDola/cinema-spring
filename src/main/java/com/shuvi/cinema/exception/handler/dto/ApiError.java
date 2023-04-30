@@ -7,6 +7,8 @@ import lombok.extern.jackson.Jacksonized;
 import java.time.LocalDateTime;
 
 /**
+ * DTO ошибки.
+ *
  * @author Shuvi
  */
 @Data
