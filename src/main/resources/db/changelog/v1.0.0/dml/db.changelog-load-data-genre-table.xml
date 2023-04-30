@@ -4,7 +4,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
     <changeSet id="load-data-to-genre-table" author="shuvi" labels="data">
-        <loadData tableName="genres" file="data/genre.csv"/>
+        <loadData tableName="genres" file="db/changelog/v1.0.0/dml/data/genre.csv"/>
     </changeSet>
+    
 </databaseChangeLog>

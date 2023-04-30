@@ -33,7 +33,7 @@ class GenreControllerTest {
     private ObjectMapper mapper;
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/data/genre.csv", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/db/changelog/v1.0.0/dml/data/genre.csv", numLinesToSkip = 1)
     void getGenreById(String uuid, String name, String description) throws Exception {
         String urlTemplate = "/genre/" + uuid;
 
