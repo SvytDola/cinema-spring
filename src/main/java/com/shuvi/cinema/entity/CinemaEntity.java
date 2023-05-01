@@ -10,6 +10,11 @@ import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Сущность кино.
+ *
+ * @author Shuvi
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,10 +27,10 @@ public class CinemaEntity {
     @Column(length = 16, unique = true, nullable = false)
     private UUID id = UUID.randomUUID();
 
-    @Column(length = 255, unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(unique = false, nullable = false)
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)

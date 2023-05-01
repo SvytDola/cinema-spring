@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="load-data-to-cinemas-table" author="shuvi" labels="data">
+        <loadData tableName="cinemas" file="db/changelog/v1.0.0/dml/data/cinema.csv">
+            <column header="id" type="uuid" name="id"/>
+            <column header="name" type="varchar" name="name"/>
+            <column header="description" type="varchar" name="description"/>
+            <column header="duration" type="bigint" name="duration"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

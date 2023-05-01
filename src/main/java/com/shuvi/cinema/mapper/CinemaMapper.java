@@ -7,6 +7,8 @@ import com.shuvi.cinema.entity.CinemaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 /**
  * @author Shuvi
  */
@@ -18,4 +20,6 @@ public interface CinemaMapper {
     CinemaEntity toEntity(CinemaCreateRequest createCinemaRequest);
 
     CinemaResponse toResponse(CinemaEntity created);
+
+    List<CinemaResponse> toResponseList(List<CinemaEntity> cinemas);
 }

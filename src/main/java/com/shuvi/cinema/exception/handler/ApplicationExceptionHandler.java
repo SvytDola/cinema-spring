@@ -38,7 +38,7 @@ public class ApplicationExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler(value = {ConstraintViolationException.class, javax.validation.ConstraintViolationException.class})
     public ResponseEntity<ApiError> handleSqlException(Exception ex) {
         // TODO: Возможно это приведёт к уязвимости сервера.
         ApiError apiError = new ApiError(ex.getMessage());

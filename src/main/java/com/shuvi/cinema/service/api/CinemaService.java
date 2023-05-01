@@ -4,6 +4,8 @@ import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Сервис API сущности "Cinema".
@@ -19,4 +21,21 @@ public interface CinemaService {
      * @return Информацию о созданном кино.
      */
     CinemaResponse create(@NotNull CinemaCreateRequest createCinemaRequest);
+
+    /**
+     * Получить список кино.
+     *
+     * @param start Точка старта откуда начинать брать данные из таблицы.
+     * @param size  Количество записей, которое необходимо получить.
+     * @return Список кино.
+     */
+    List<CinemaResponse> findAll(int start, int size);
+
+    /**
+     * Получить кино по идентификатору.
+     *
+     * @param id Идентификатор кино.
+     * @return Информация о кино.
+     */
+    CinemaResponse findById(@NotNull UUID id);
 }

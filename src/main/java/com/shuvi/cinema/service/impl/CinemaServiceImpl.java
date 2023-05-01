@@ -3,14 +3,19 @@ package com.shuvi.cinema.service.impl;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
+import com.shuvi.cinema.exception.CinemaNotFound;
 import com.shuvi.cinema.mapper.CinemaMapper;
 import com.shuvi.cinema.repository.CinemaRepository;
 import com.shuvi.cinema.service.api.CinemaService;
 import com.shuvi.cinema.service.api.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Shuvi
@@ -34,25 +39,18 @@ public class CinemaServiceImpl implements CinemaService {
         CinemaEntity created = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(created);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CinemaResponse> findAll(int start, int size) {
+        return cinemaRepository.findAll(PageRequest.of(start, size))
+                .map(cinemaMapper::toResponse).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CinemaResponse findById(UUID id) {
+        CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
+        return cinemaMapper.toResponse(cinemaEntity);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
