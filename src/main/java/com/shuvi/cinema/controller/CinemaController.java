@@ -63,8 +63,9 @@ public class CinemaController {
     @Operation(summary = "Запрос на получение всех записей кино.")
     public List<CinemaResponse> findAll(
             @RequestParam(defaultValue = "0") int start,
-            @RequestParam(defaultValue = "100") @Positive int size) {
-        return cinemaService.findAll(start, size);
+            @RequestParam(defaultValue = "100") @Positive int size,
+            @RequestParam(defaultValue = "", required = false) List<String> genres) {
+        return cinemaService.findAll(start, size, genres);
     }
 
     @GetMapping("/{id}")

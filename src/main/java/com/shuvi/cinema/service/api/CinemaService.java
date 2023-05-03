@@ -29,7 +29,7 @@ public interface CinemaService {
      * @param size  Количество записей, которое необходимо получить.
      * @return Список кино.
      */
-    List<CinemaResponse> findAll(int start, int size);
+    List<CinemaResponse> findAll(int start, int size, List<String> genres);
 
     /**
      * Получить кино по идентификатору.

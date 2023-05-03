@@ -42,9 +42,9 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CinemaResponse> findAll(int start, int size) {
-        return cinemaRepository.findAll(PageRequest.of(start, size))
-                .map(cinemaMapper::toResponse).toList();
+    public List<CinemaResponse> findAll(int start, int size, List<String> genres) {
+        List<CinemaEntity> cinemaEntities = cinemaRepository.findByGenresNameIn(genres, PageRequest.of(start, size));
+        return cinemaMapper.toResponseList(cinemaEntities);
     }
 
     @Override
