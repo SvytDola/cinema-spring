@@ -7,4 +7,5 @@
 
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-cinemas-table.xml"/>
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-genres-table.xml"/>
+    <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-cinemas-genres-table.xml"/>
 </databaseChangeLog>

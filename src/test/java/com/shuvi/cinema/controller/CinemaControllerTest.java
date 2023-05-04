@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +38,7 @@ public class CinemaControllerTest {
     private ObjectMapper mapper;
 
     @Test
-    void shouldCreateCinemaAndReturnStatus201() throws Exception {
+    void createTest() throws Exception {
         String name = "Cinema";
         String description = "Description";
         long duration = 100;
@@ -63,7 +65,7 @@ public class CinemaControllerTest {
     }
 
     @Test
-    void shouldReturnStatus422WhenCreateCinemaWithBlankNameAndDescription() throws Exception {
+    void createWithBlankNameAndDescription() throws Exception {
         String name = "";
         String description = "";
         long duration = 100;
@@ -86,14 +88,14 @@ public class CinemaControllerTest {
     }
 
     @Test
-    void shouldReturnCinemasAndReturnStatus200() throws Exception {
+    void getInfoByGenreNames() throws Exception {
         mockMvc.perform(get(String.format("%s?start=0&size=100", CINEMA_API_PATH)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    void shouldReturnCinemaByIdAndReturnStatusCode200() throws Exception {
+    void getById() throws Exception {
         String name = "test";
         String description = "description";
         long duration = 100;
@@ -140,6 +142,25 @@ public class CinemaControllerTest {
                         .andReturn().getResponse().getContentAsString(),
                 CinemaResponse.class
         );
+    }
+
+    @CsvFileSource(resources = {"/db/changelog/v1.0.0/dml/data/cinema.csv"}, numLinesToSkip = 1)
+    @ParameterizedTest
+    void getInfoByIdTest(
+            String id,
+            String name,
+            String description,
+            int duration) throws Exception {
+        String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, id);
+
+
+        mockMvc.perform(get(urlTemplate))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(name)))
+                .andExpect(jsonPath("$.description", equalTo(description)))
+                .andExpect(jsonPath("$.duration", equalTo(Math.toIntExact(duration))))
+                .andExpect(jsonPath("$.genres").isArray());
     }
 
 }

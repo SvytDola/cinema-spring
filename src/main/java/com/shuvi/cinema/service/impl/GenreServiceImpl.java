@@ -3,7 +3,7 @@ package com.shuvi.cinema.service.impl;
 import com.shuvi.cinema.controller.dto.genre.GenreCreateRequest;
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
 import com.shuvi.cinema.entity.GenreEntity;
-import com.shuvi.cinema.exception.GenreNotFound;
+import com.shuvi.cinema.exception.genre.GenreNotFound;
 import com.shuvi.cinema.mapper.GenreMapper;
 import com.shuvi.cinema.repository.GenreRepository;
 import com.shuvi.cinema.service.api.GenreService;

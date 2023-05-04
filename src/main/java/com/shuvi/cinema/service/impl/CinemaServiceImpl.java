@@ -3,13 +3,14 @@ package com.shuvi.cinema.service.impl;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
-import com.shuvi.cinema.exception.CinemaNotFound;
+import com.shuvi.cinema.exception.cinema.CinemaNotFound;
 import com.shuvi.cinema.mapper.CinemaMapper;
 import com.shuvi.cinema.repository.CinemaRepository;
 import com.shuvi.cinema.service.api.CinemaService;
 import com.shuvi.cinema.service.api.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,19 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     @Transactional(readOnly = true)
     public List<CinemaResponse> findAll(int start, int size, List<String> genres) {
-        List<CinemaEntity> cinemaEntities = cinemaRepository.findByGenresNameIn(genres, PageRequest.of(start, size));
+        Pageable pageable = PageRequest.of(start, size);
+        List<CinemaEntity> cinemaEntities;
+
+        if (genres == null) {
+            cinemaEntities = cinemaRepository
+                    .findAll(pageable)
+                    .stream()
+                    .toList();
+        } else {
+            cinemaEntities = cinemaRepository
+                    .findByGenresNameIn(genres, pageable);
+        }
+
         return cinemaMapper.toResponseList(cinemaEntities);
     }
 

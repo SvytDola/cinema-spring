@@ -3,7 +3,6 @@ package com.shuvi.cinema.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.genre.GenreCreateRequest;
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -16,11 +15,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 
 @SpringBootTest
@@ -35,17 +36,6 @@ class GenreControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    @BeforeEach
-    public void initMockWvc() {
-        mockMvc = webAppContextSetup(webApplicationContext)
-                .addFilter(((request, response, chain) -> {
-                    String charsetUtf8 = "UTF-8";
-                    request.setCharacterEncoding(charsetUtf8);
-                    response.setCharacterEncoding(charsetUtf8);
-                    chain.doFilter(request, response);
-                })).build();
-    }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/db/changelog/v1.0.0/dml/data/genre.csv", numLinesToSkip = 1)
@@ -96,7 +86,7 @@ class GenreControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
