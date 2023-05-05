@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -57,7 +58,7 @@ public class GenreController {
                             schema = @Schema(implementation = ApiError.class)
                     ))
     })
-    public GenreResponse createGenre(@RequestBody @Valid GenreCreateRequest createRequest) {
+    public GenreResponse createGenre(@NonNull @RequestBody @Valid GenreCreateRequest createRequest) {
         return genreService.createGenre(createRequest);
     }
 
@@ -139,7 +140,7 @@ public class GenreController {
                             schema = @Schema(implementation = ApiError.class)
                     ))
     })
-    public GenreResponse update(@PathVariable UUID id, @Valid @RequestBody GenreCreateRequest body) {
+    public GenreResponse update(@NonNull @PathVariable UUID id, @NonNull @Valid @RequestBody GenreCreateRequest body) {
         return genreService.update(id, body);
     }
 

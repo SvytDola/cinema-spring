@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
 import static org.hamcrest.Matchers.equalTo;
@@ -23,19 +22,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class GenreControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper mapper;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     @ParameterizedTest
     @CsvFileSource(resources = "/db/changelog/v1.0.0/dml/data/genre.csv", numLinesToSkip = 1)
@@ -63,8 +57,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
 
         this.mockMvc.perform(post(GENRE_API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo(genreName)))
@@ -83,8 +77,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
 
         mockMvc.perform(post(GENRE_API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -95,7 +89,6 @@ class GenreControllerTest {
         mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(status().isNotFound());
     }
 
-
     GenreResponse createGenre(String name, String description) throws Exception {
         GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(name)
@@ -104,17 +97,14 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
         return mapper.readValue(
                 mockMvc.perform(post(GENRE_API_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(body)
-                        )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.name", equalTo(name)))
                         .andExpect(jsonPath("$.description", equalTo(description)))
                         .andReturn().getResponse().getContentAsString(),
-                GenreResponse.class
-        );
+                GenreResponse.class);
     }
-
 
     GenreResponse updateGenreById(String id, String name, String description) throws Exception {
         GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
@@ -127,9 +117,8 @@ class GenreControllerTest {
         String urlTemplate = String.format("%s/%s", GENRE_API_PATH, id);
 
         String response = mockMvc.perform(put(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body)
-                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))
@@ -169,8 +158,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
 
         this.mockMvc.perform(post(GENRE_API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }

@@ -1,8 +1,10 @@
 package com.shuvi.cinema.repository;
 
 import com.shuvi.cinema.entity.GenreEntity;
+
+import io.micrometer.core.lang.NonNull;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 import java.util.UUID;
@@ -10,8 +12,7 @@ import java.util.UUID;
 /**
  * @author Shuvi
  */
-@Repository
 public interface GenreRepository extends JpaRepository<GenreEntity, UUID> {
 
-    Set<GenreEntity> findByIdIn(Set<UUID> uuids);
+    Set<GenreEntity> findByIdIn(@NonNull Set<UUID> uuids);
 }

@@ -7,9 +7,10 @@ import com.shuvi.cinema.exception.genre.GenreNotFound;
 import com.shuvi.cinema.mapper.GenreMapper;
 import com.shuvi.cinema.repository.GenreRepository;
 import com.shuvi.cinema.service.api.GenreService;
-import lombok.NonNull;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,6 @@ import java.util.UUID;
 /**
  * @author Shuvi
  */
-@Log4j2
 @Service
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
@@ -46,7 +46,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreResponse update(UUID id, GenreCreateRequest body) {
+    public GenreResponse update(@NonNull UUID id, @NonNull GenreCreateRequest body) {
         GenreEntity genreEntityFromDb = genreRepository.findById(id).orElseThrow(GenreNotFound::new);
         GenreEntity genreEntityUpdate = genreMapper.toEntity(id, body);
 
@@ -63,7 +63,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Set<GenreEntity> findAllByIds(Set<UUID> uuids) {
+    public Set<GenreEntity> findAllByIds(@NonNull Set<UUID> uuids) {
         return genreRepository.findByIdIn(uuids);
     }
 }

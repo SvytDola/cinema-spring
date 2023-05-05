@@ -46,7 +46,7 @@ public interface GenreService {
      * @param body Детали жанра.
      * @return Информацию об обновлённом жанре.
      */
-    GenreResponse update(UUID id, GenreCreateRequest body);
+    GenreResponse update(@NonNull UUID id, @NonNull GenreCreateRequest body);
 
     /**
      * Получить список всех жанров.
@@ -61,5 +61,5 @@ public interface GenreService {
      * @param uuids Список идентификаторов.
      * @return Список сущностей "Genre".
      */
-    Set<GenreEntity> findAllByIds(Set<UUID> uuids);
+    Set<GenreEntity> findAllByIds(@NonNull Set<UUID> uuids);
 }
