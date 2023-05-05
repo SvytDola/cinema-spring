@@ -61,5 +61,5 @@ public interface GenreService {
      * @param uuids Список идентификаторов.
      * @return Список сущностей "Genre".
      */
-    Set<GenreEntity> findAllByIds(@NonNull Set<UUID> uuids);
+    Set<GenreEntity> findAllByIds(Set<UUID> uuids);
 }

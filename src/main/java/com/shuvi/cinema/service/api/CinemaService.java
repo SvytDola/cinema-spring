@@ -2,12 +2,11 @@ package com.shuvi.cinema.service.api;
 
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
+import com.shuvi.cinema.exception.cinema.CinemaNotFound;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.lang.Nullable;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +24,7 @@ public interface CinemaService {
      * @param createCinemaRequest Детали создаваемого кино.
      * @return Информацию о созданном кино.
      */
-    CinemaResponse create(@NotNull CinemaCreateRequest createCinemaRequest);
+    CinemaResponse create(@NonNull CinemaCreateRequest createCinemaRequest);
 
     /**
      * Получить список кино.
@@ -35,15 +34,16 @@ public interface CinemaService {
      * @param genres Список жанров.
      * @return Список кино.
      */
-    List<CinemaResponse> findAll(int start, int size, @Null List<String> genres);
+    List<CinemaResponse> findAll(int start, int size, @Nullable List<String> genres);
 
     /**
      * Получить кино по идентификатору.
      *
      * @param id Идентификатор кино.
      * @return Информация о кино.
+     * @throws CinemaNotFound
      */
-    CinemaResponse findById(@NotNull UUID id);
+    CinemaResponse findById(@NonNull UUID id);
 
     /**
      * Удалить кино по идентификатору.
@@ -51,5 +51,5 @@ public interface CinemaService {
      * @param id Идентификатор кино.
      * @throws EmptyResultDataAccessException
      */
-    void deleteById(@NotNull UUID id);
+    void deleteById(@NonNull UUID id);
 }

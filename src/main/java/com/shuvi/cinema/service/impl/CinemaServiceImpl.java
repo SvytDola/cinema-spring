@@ -12,11 +12,11 @@ import com.shuvi.cinema.service.api.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class CinemaServiceImpl implements CinemaService {
     private final CinemaRepository cinemaRepository;
 
     @Override
-    public CinemaResponse create(@NotNull CinemaCreateRequest createCinemaRequest) {
+    public CinemaResponse create(@NonNull CinemaCreateRequest createCinemaRequest) {
         CinemaEntity cinemaEntity = cinemaMapper.toEntity(createCinemaRequest);
         Set<GenreEntity> genres = genreService.findAllByIds(createCinemaRequest.getGenres());
         cinemaEntity.setGenres(genres);
@@ -45,7 +45,7 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CinemaResponse> findAll(int start, int size, @Null List<String> genres) {
+    public List<CinemaResponse> findAll(int start, int size, @Nullable List<String> genres) {
         Pageable pageable = PageRequest.of(start, size);
         List<CinemaEntity> cinemaEntities;
 
@@ -64,13 +64,13 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Override
     @Transactional(readOnly = true)
-    public CinemaResponse findById(@NotNull UUID id) {
+    public CinemaResponse findById(@NonNull UUID id) {
         CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
         return cinemaMapper.toResponse(cinemaEntity);
     }
 
     @Override
-    public void deleteById(@NotNull UUID id) {
+    public void deleteById(@NonNull UUID id) {
         cinemaRepository.deleteById(id);
     }
 }

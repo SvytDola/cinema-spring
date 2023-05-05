@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +25,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.UUID;
@@ -64,7 +64,7 @@ public class CinemaController {
             )
     })
     @ResponseStatus(HttpStatus.CREATED)
-    public CinemaResponse create(@Valid @RequestBody CinemaCreateRequest createCinemaRequest) {
+    public CinemaResponse create(@NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest) {
         return cinemaService.create(createCinemaRequest);
     }
 
@@ -79,21 +79,21 @@ public class CinemaController {
     public List<CinemaResponse> findAll(
             @RequestParam(defaultValue = "0") int start,
             @RequestParam(defaultValue = "25") @Positive int size,
-            @Null @RequestParam(required = false) List<String> genres) {
+            @Nullable @RequestParam(required = false) List<String> genres) {
         return cinemaService.findAll(start, size, genres);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Запрос на получение записи по идентификатору.")
-    public CinemaResponse find(@NotNull @PathVariable UUID id) {
+    public CinemaResponse find(@NonNull @PathVariable UUID id) {
         return cinemaService.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление кино по идентификатору.")
-    public void deleteById(@NotNull @PathVariable UUID id) {
+    public void deleteById(@NonNull @PathVariable UUID id) {
         cinemaService.deleteById(id);
     }
 

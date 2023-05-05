@@ -63,7 +63,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Set<GenreEntity> findAllByIds(@NonNull Set<UUID> uuids) {
+    public Set<GenreEntity> findAllByIds(Set<UUID> uuids) {
         return genreRepository.findByIdIn(uuids);
     }
 }
