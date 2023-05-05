@@ -3,7 +3,6 @@ package com.shuvi.cinema.exception.handler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.shuvi.cinema.exception.BaseException;
 import com.shuvi.cinema.exception.handler.dto.ApiError;
-import lombok.extern.log4j.Log4j2;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import static com.shuvi.cinema.common.ExceptionMessageConstant.NOT_FOUND_MESSAGE
 /**
  * @author Shuvi
  */
-@Log4j2
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
