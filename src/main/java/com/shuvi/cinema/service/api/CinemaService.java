@@ -4,6 +4,11 @@ import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +35,7 @@ public interface CinemaService {
      * @param genres Список жанров.
      * @return Список кино.
      */
-    List<CinemaResponse> findAll(int start, int size, List<String> genres);
+    List<CinemaResponse> findAll(int start, int size, @Null List<String> genres);
 
     /**
      * Получить кино по идентификатору.
@@ -39,4 +44,12 @@ public interface CinemaService {
      * @return Информация о кино.
      */
     CinemaResponse findById(@NotNull UUID id);
+
+    /**
+     * Удалить кино по идентификатору.
+     * 
+     * @param id Идентификатор кино.
+     * @throws EmptyResultDataAccessException
+     */
+    void deleteById(@NotNull UUID id);
 }

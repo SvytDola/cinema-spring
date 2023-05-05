@@ -3,6 +3,7 @@ package com.shuvi.cinema.service.impl;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
+import com.shuvi.cinema.entity.GenreEntity;
 import com.shuvi.cinema.exception.cinema.CinemaNotFound;
 import com.shuvi.cinema.mapper.CinemaMapper;
 import com.shuvi.cinema.repository.CinemaRepository;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -34,16 +37,15 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     public CinemaResponse create(@NotNull CinemaCreateRequest createCinemaRequest) {
         CinemaEntity cinemaEntity = cinemaMapper.toEntity(createCinemaRequest);
-
-        cinemaEntity.setGenres(genreService.findAllByIds(createCinemaRequest.getGenres()));
-
+        Set<GenreEntity> genres = genreService.findAllByIds(createCinemaRequest.getGenres());
+        cinemaEntity.setGenres(genres);
         CinemaEntity created = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(created);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<CinemaResponse> findAll(int start, int size, List<String> genres) {
+    public List<CinemaResponse> findAll(int start, int size, @Null List<String> genres) {
         Pageable pageable = PageRequest.of(start, size);
         List<CinemaEntity> cinemaEntities;
 
@@ -62,8 +64,13 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Override
     @Transactional(readOnly = true)
-    public CinemaResponse findById(UUID id) {
+    public CinemaResponse findById(@NotNull UUID id) {
         CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
         return cinemaMapper.toResponse(cinemaEntity);
+    }
+
+    @Override
+    public void deleteById(@NotNull UUID id) {
+        cinemaRepository.deleteById(id);
     }
 }
