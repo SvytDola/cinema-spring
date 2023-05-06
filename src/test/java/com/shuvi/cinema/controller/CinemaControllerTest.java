@@ -19,8 +19,9 @@ import java.util.UUID;
 import static com.shuvi.cinema.common.ResourceConstant.CINEMA_API_PATH;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,9 +55,8 @@ public class CinemaControllerTest {
         String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(post(CINEMA_API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body)
-                ).andDo(print())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)).andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.description", equalTo(description)))
@@ -81,9 +81,8 @@ public class CinemaControllerTest {
         String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(post(CINEMA_API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body)
-                ).andDo(print())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)).andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
@@ -118,8 +117,7 @@ public class CinemaControllerTest {
             String name,
             String description,
             long duration,
-            Set<UUID> uuids
-    ) throws Exception {
+            Set<UUID> uuids) throws Exception {
         CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
@@ -131,20 +129,18 @@ public class CinemaControllerTest {
 
         return mapper.readValue(
                 mockMvc.perform(post(CINEMA_API_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(body)
-                        ).andDo(print())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andDo(print())
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.name", equalTo(name)))
                         .andExpect(jsonPath("$.description", equalTo(description)))
                         .andExpect(jsonPath("$.duration", equalTo(Math.toIntExact(duration))))
                         .andExpect(jsonPath("$.genres").isArray())
                         .andReturn().getResponse().getContentAsString(),
-                CinemaResponse.class
-        );
+                CinemaResponse.class);
     }
 
-    @CsvFileSource(resources = {"/db/changelog/v1.0.0/dml/data/cinema.csv"}, numLinesToSkip = 1)
+    @CsvFileSource(resources = { "/db/changelog/v1.0.0/dml/data/cinema.csv" }, numLinesToSkip = 1)
     @ParameterizedTest
     void getInfoByIdTest(
             String id,
@@ -152,7 +148,6 @@ public class CinemaControllerTest {
             String description,
             int duration) throws Exception {
         String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, id);
-
 
         mockMvc.perform(get(urlTemplate))
                 .andDo(print())
@@ -163,4 +158,19 @@ public class CinemaControllerTest {
                 .andExpect(jsonPath("$.genres").isArray());
     }
 
+    @Test
+    void deleteById() throws Exception {
+        String name = "Test";
+        String description = "test description";
+        long duration = 100;
+        Set<UUID> uuids = Set.of();
+
+        CinemaResponse cinemaCreated = createCinema(name, description, duration, uuids);
+
+        String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
+
+        mockMvc.perform(delete(urlTemplate)).andDo(print())
+                .andExpect(status().isNoContent());
+
+    }
 }

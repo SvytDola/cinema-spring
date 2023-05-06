@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -31,8 +32,8 @@ import java.util.UUID;
 public class CinemaEntity {
 
     @Id
-    @Column(length = 16, unique = true, nullable = false)
-    private UUID id = UUID.randomUUID();
+    @GeneratedValue
+    private UUID id;
 
     @Column(unique = true, nullable = false)
     private String name;
