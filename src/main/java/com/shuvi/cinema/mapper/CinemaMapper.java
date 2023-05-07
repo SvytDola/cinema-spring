@@ -6,6 +6,7 @@ import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface CinemaMapper {
     CinemaResponse toResponse(CinemaEntity created);
 
     List<CinemaResponse> toResponseList(List<CinemaEntity> cinemas);
+
+    @Mapping(target = "id", ignore = true)
+    void update(@MappingTarget CinemaEntity cinemaEntity, CinemaEntity cinemaUpdate);
 }

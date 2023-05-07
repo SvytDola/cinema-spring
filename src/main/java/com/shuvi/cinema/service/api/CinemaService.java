@@ -3,10 +3,9 @@ package com.shuvi.cinema.service.api;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.exception.cinema.CinemaNotFound;
-
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.lang.Nullable;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,15 +40,22 @@ public interface CinemaService {
      *
      * @param id Идентификатор кино.
      * @return Информация о кино.
-     * @throws CinemaNotFound
      */
     CinemaResponse findById(@NonNull UUID id);
 
     /**
      * Удалить кино по идентификатору.
-     * 
+     *
      * @param id Идентификатор кино.
-     * @throws EmptyResultDataAccessException
      */
     void deleteById(@NonNull UUID id);
+
+    /**
+     * Обновление кино по иденитификатору.
+     *
+     * @param id   Идентификатор кино.
+     * @param body Детали обновляемого кино.
+     * @return Информацию об обновлённом кино.
+     */
+    CinemaResponse updateById(@NonNull UUID id, @NonNull CinemaCreateRequest body);
 }

@@ -14,10 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,8 +54,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
 
         this.mockMvc.perform(post(GENRE_API_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo(genreName)))
@@ -77,8 +74,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
 
         mockMvc.perform(post(GENRE_API_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -97,8 +94,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
         return mapper.readValue(
                 mockMvc.perform(post(GENRE_API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.name", equalTo(name)))
                         .andExpect(jsonPath("$.description", equalTo(description)))
@@ -117,8 +114,8 @@ class GenreControllerTest {
         String urlTemplate = String.format("%s/%s", GENRE_API_PATH, id);
 
         String response = mockMvc.perform(put(urlTemplate)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))
@@ -158,8 +155,8 @@ class GenreControllerTest {
         String body = mapper.writeValueAsString(genreCreateRequest);
 
         this.mockMvc.perform(post(GENRE_API_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }

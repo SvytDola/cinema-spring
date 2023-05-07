@@ -1,9 +1,7 @@
 package com.shuvi.cinema.repository;
 
 import com.shuvi.cinema.entity.GenreEntity;
-
 import io.micrometer.core.lang.NonNull;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;

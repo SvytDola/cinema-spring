@@ -50,13 +50,9 @@ public class CinemaServiceImpl implements CinemaService {
         List<CinemaEntity> cinemaEntities;
 
         if (genres == null) {
-            cinemaEntities = cinemaRepository
-                    .findAll(pageable)
-                    .stream()
-                    .toList();
+            cinemaEntities = cinemaRepository.findAll(pageable).stream().toList();
         } else {
-            cinemaEntities = cinemaRepository
-                    .findByGenresNameIn(genres, pageable);
+            cinemaEntities = cinemaRepository.findByGenresNameIn(genres, pageable);
         }
 
         return cinemaMapper.toResponseList(cinemaEntities);
@@ -72,5 +68,17 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     public void deleteById(@NonNull UUID id) {
         cinemaRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public CinemaResponse updateById(@NonNull UUID id, @NonNull CinemaCreateRequest body) {
+        CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
+        Set<GenreEntity> genres = genreService.findAllByIds(body.getGenres());
+        CinemaEntity cinemaUpdate = cinemaMapper.toEntity(body);
+        cinemaUpdate.setGenres(genres);
+        cinemaMapper.update(cinemaEntity, cinemaUpdate);
+        CinemaEntity cinemaUpdated = cinemaRepository.save(cinemaEntity);
+        return cinemaMapper.toResponse(cinemaUpdated);
     }
 }

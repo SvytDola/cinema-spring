@@ -7,9 +7,7 @@ import com.shuvi.cinema.exception.genre.GenreNotFound;
 import com.shuvi.cinema.mapper.GenreMapper;
 import com.shuvi.cinema.repository.GenreRepository;
 import com.shuvi.cinema.service.api.GenreService;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
