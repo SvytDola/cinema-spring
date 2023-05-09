@@ -177,9 +177,9 @@ public class CinemaControllerTest {
         String name = "delete";
         String description = "test description";
         long duration = 100;
-        Set<UUID> uuids = Set.of();
+        Set<UUID> genreIds = Set.of();
 
-        CinemaResponse cinemaCreated = createCinema(name, description, duration, uuids);
+        CinemaResponse cinemaCreated = createCinema(name, description, duration, genreIds);
 
         String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
 
