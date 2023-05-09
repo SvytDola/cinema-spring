@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-users-table" author="shuvi">
+        <createTable tableName="users">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+
+
+            <column name="surname" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="varchar(2048)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="enabled" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="add-fk-column-author-id-on-reviews" author="shuvi">
+        <addColumn tableName="reviews">
+            <column name="author_id" type="uuid">
+                <constraints nullable="false"
+                             references="reviews(id)"
+                             foreignKeyName="fk_author_id_on_reviews"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

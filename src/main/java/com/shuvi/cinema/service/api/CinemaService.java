@@ -2,8 +2,6 @@ package com.shuvi.cinema.service.api;
 
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
-import com.shuvi.cinema.exception.cinema.CinemaNotFound;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 

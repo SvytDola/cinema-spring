@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet id="create-cinema-genre-table" author="shuvi">
+    <changeSet id="create-cinemas-genres-table" author="shuvi">
         <createTable tableName="cinemas_genres">
             <column name="id" type="serial" autoIncrement="true">
                 <constraints primaryKey="true" unique="true" nullable="false"/>

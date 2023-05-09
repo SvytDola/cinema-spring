@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Сущность кино.
+ * Сущность "Кино".
  *
  * @author Shuvi
  */
@@ -43,4 +43,7 @@ public class CinemaEntity {
     }, fetch = FetchType.LAZY)
     @JoinTable(name = "cinemas_genres", joinColumns = @JoinColumn(name = "cinema_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<GenreEntity> genres;
+
+    @OneToMany(mappedBy = "cinema")
+    private Set<ReviewEntity> reviews;
 }

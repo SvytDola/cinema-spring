@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet id="create-genre-table" author="shuvi">
+    <changeSet id="create-genres-table" author="shuvi">
         <createTable tableName="genres">
             <column name="id" type="uuid">
                 <constraints nullable="false" unique="true"/>

@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Сущность жанра.
+ * Сущность "Жанра".
  *
  * @author Shuvi
  */

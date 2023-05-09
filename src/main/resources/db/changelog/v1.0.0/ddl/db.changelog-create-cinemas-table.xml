@@ -21,9 +21,18 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="shuvi"
-               id="add-fk-column-cinema-id-on-cinemas-genres">
+    <changeSet author="shuvi" id="add-fk-column-cinema-id-on-cinemas-genres">
         <addColumn tableName="cinemas_genres">
+            <column name="cinema_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_cinema_id_on_cinemas_genres"
+                             references="cinemas(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="shuvi" id="add-fk-column-cinema-id-on-reviews">
+        <addColumn tableName="reviews">
             <column name="cinema_id" type="uuid">
                 <constraints nullable="false"
                              foreignKeyName="fk_cinema_id_on_cinemas_genres"

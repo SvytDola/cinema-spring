@@ -5,8 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="/db/changelog/v1.0.0/ddl/db.changelog-create-cinemas-genres-table.xml"/>
-
-    <include file="/db/changelog/v1.0.0/ddl/db.changelog-create-genres-table.xml"/>
-    <include file="/db/changelog/v1.0.0/ddl/db.changelog-create-cinemas-table.xml"/>
+    <include file="db/changelog/v1.0.0/ddl/db.changelog-create-cinemas-genres-table.xml"/>
+    <include file="db/changelog/v1.0.0/ddl/db.changelog-create-reviews-table.xml"/>
+    <include file="db/changelog/v1.0.0/ddl/db.changelog-create-users-table.xml"/>
+    <include file="db/changelog/v1.0.0/ddl/db.changelog-create-genres-table.xml"/>
+    <include file="db/changelog/v1.0.0/ddl/db.changelog-create-cinemas-table.xml"/>
 </databaseChangeLog>
