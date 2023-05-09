@@ -14,16 +14,26 @@ public class ResourceConstant {
     /**
      * Жанры.
      */
-    public static final String GENRE_API_PATH = "/genre";
+    public static final String GENRE_API_PATH = "/api/genre";
 
     /**
      * Кино.
      */
-    public static final String CINEMA_API_PATH = "/cinema";
+    public static final String CINEMA_API_PATH = "/api/cinema";
 
     /**
      * Рецензии
      */
-    private static final String REVIEW_API_PATH = "/review";
+    public static final String REVIEW_API_PATH = "/api/review";
+
+    /**
+     * Авторизация.
+     */
+    public static final String AUTH_API_PATH = "/api/auth";
+
+    /**
+     * Logout.
+     */
+    public static final String LOGOUT_API_PATH = AUTH_API_PATH + "/logout";
 
 }
