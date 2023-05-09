@@ -92,7 +92,7 @@ public class CinemaController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление данных о кино.")
-    public CinemaResponse update(
+    public CinemaResponse updateById(
             @NonNull @PathVariable UUID id,
             @NonNull @Valid @RequestBody CinemaCreateRequest body) {
         return cinemaService.updateById(id, body);
