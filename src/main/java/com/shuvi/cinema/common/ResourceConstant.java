@@ -21,5 +21,9 @@ public class ResourceConstant {
      */
     public static final String CINEMA_API_PATH = "/cinema";
 
+    /**
+     * Рецензии
+     */
+    private static final String REVIEW_API_PATH = "/review";
 
 }
