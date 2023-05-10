@@ -32,4 +32,7 @@ public class ReviewResponse {
 
     @Schema(description = "Информация о кино.")
     private CinemaResponse cinema;
+
+    @Schema(description = "Оценка.")
+    private int score;
 }

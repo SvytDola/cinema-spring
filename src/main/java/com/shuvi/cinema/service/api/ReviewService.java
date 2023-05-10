@@ -10,5 +10,12 @@ import com.shuvi.cinema.controller.dto.review.ReviewResponse;
  * @author Shuvi
  */
 public interface ReviewService {
+
+    /**
+     * Создать рецензию.
+     *
+     * @param reviewCreateRequest Детали создаваемой рецензии.
+     * @return Информацию о созданной рецензии.
+     */
     ReviewResponse create(ReviewCreateRequest reviewCreateRequest);
 }

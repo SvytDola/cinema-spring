@@ -1,9 +1,11 @@
 package com.shuvi.cinema.controller.dto.cinema;
 
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
+import com.shuvi.cinema.controller.dto.review.ReviewResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,4 +31,7 @@ public class CinemaResponse {
 
     @Schema(description = "Жанры кино")
     private Set<GenreResponse> genres;
+
+    @Schema(description = "Рецензии кино")
+    private Collection<ReviewResponse> reviews;
 }

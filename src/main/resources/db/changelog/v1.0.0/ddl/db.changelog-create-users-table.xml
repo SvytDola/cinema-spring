@@ -41,7 +41,7 @@
         <addColumn tableName="reviews">
             <column name="author_id" type="uuid">
                 <constraints nullable="false"
-                             references="reviews(id)"
+                             references="users(id)"
                              foreignKeyName="fk_author_id_on_reviews"/>
             </column>
         </addColumn>

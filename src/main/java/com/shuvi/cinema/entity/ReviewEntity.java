@@ -42,4 +42,7 @@ public class ReviewEntity {
     @JoinColumn(name = "cinema_id", nullable = false)
     private CinemaEntity cinema;
 
+    @Column
+    private int score;
+
 }

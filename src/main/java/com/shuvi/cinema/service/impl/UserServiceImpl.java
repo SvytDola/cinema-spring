@@ -34,10 +34,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
-        final UserEntity userEntity = userRepository.findByEmail(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-
-        return userEntity;
     }
 
     @Override
@@ -46,7 +44,6 @@ public class UserServiceImpl implements UserService {
         final UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(UserNotFound::new);
         return userMapper.toResponse(userEntity);
     }
-
 
     @Override
     @Transactional(readOnly = true)
