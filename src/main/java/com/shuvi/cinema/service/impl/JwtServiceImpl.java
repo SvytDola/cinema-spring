@@ -8,7 +8,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -50,19 +49,18 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(@NonNull String id) {
-        return buildToken(id, tokenExpiration);
+    public String generateToken(@NonNull String username) {
+        return buildToken(username, tokenExpiration);
     }
 
     @Override
-    public String generateRefreshToken(@NonNull String id) {
-        return buildToken(id, refreshTokenExpiration);
+    public String generateRefreshToken(@NonNull String username) {
+        return buildToken(username, refreshTokenExpiration);
     }
 
     @Override
-    public boolean isTokenValid(@NonNull Claims claims, UserDetails userDetails) {
-        final String username = claims.getSubject();
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(claims.getExpiration());
+    public boolean isTokenValid(@NonNull Claims claims, String username) {
+        return claims.getSubject().equals(username) && !isTokenExpired(claims.getExpiration());
     }
 
     private boolean isTokenExpired(Date expiration) {

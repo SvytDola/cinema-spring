@@ -131,6 +131,12 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc-openapi-ui.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -4,7 +4,6 @@ import com.shuvi.cinema.controller.dto.auth.AuthLoginRequest;
 import com.shuvi.cinema.controller.dto.auth.AuthResponse;
 import com.shuvi.cinema.controller.dto.user.UserCreateRequest;
 import com.shuvi.cinema.controller.dto.user.UserResponse;
-import com.shuvi.cinema.entity.UserEntity;
 import com.shuvi.cinema.service.api.AuthService;
 import com.shuvi.cinema.service.api.JwtService;
 import com.shuvi.cinema.service.api.UserService;
@@ -21,29 +20,35 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+
+    private final JwtService jwtService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
 
     @Override
     public AuthResponse register(@NonNull UserCreateRequest body) {
         body.setPassword(passwordEncoder.encode(body.getPassword()));
         UserResponse userResponse = userService.create(body);
-        final String id = userResponse.getId().toString();
-        final String token = jwtService.generateToken(id);
-        final String refreshToken = jwtService.generateRefreshToken(id);
+        final String token = jwtService.generateToken(body.getEmail());
+        final String refreshToken = jwtService.generateRefreshToken(body.getEmail());
         return AuthResponse.builder()
                 .token(token)
                 .refreshToken(refreshToken)
+                .user(userResponse)
                 .build();
     }
 
     @Override
-    public AuthResponse login(AuthLoginRequest body) {
+    public AuthResponse login(@NonNull AuthLoginRequest body) {
+        final UserResponse userResponse = userService.getUserByEmail(body.getEmail());
 
-        UserEntity userEntity = userService.getUserByEmail(body.getEmail());
+        final String token = jwtService.generateToken(body.getEmail());
+        final String refreshToken = jwtService.generateRefreshToken(body.getEmail());
 
-        return null;
-
+        return AuthResponse.builder()
+                .token(token)
+                .refreshToken(refreshToken)
+                .user(userResponse)
+                .build();
     }
 }

@@ -7,7 +7,11 @@
 
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-cinemas-table.xml"/>
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-genres-table.xml"/>
+
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-cinemas-genres-table.xml"/>
+
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-roles-table.xml"/>
     <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-users-table.xml"/>
+
+    <include file="db/changelog/v1.0.0/dml/db.changelog-load-data-users-roles-table.xml"/>
 </databaseChangeLog>

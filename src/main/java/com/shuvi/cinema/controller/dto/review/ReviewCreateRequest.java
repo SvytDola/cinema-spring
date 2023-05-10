@@ -21,4 +21,9 @@ public class ReviewCreateRequest {
     @JsonProperty(required = true)
     private String message;
 
+    @NotNull
+    @NotBlank
+    @JsonProperty(required = true)
+    private String cinemaId;
+
 }

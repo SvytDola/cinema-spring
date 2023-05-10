@@ -17,9 +17,15 @@ public interface AuthService {
      * Зарегестрировать пользователя.
      *
      * @param body Детали создаваемого пользователя.
-     * @return Токены авторизации.
+     * @return Токены авторизации и инофрмация о созданном пользователе.
      */
     AuthResponse register(@NonNull UserCreateRequest body);
 
+    /**
+     * Автризация пользователя.
+     *
+     * @param body Логин и пароль от аккаунта.
+     * @return Токены авторизации и инофрмация о пользователе.
+     */
     AuthResponse login(@NonNull AuthLoginRequest body);
 }

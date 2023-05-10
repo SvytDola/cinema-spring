@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,8 +59,10 @@ public class CinemaController {
             )
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @Secured("ROLE_ADMIN")
-    public CinemaResponse create(@NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest) {
+    public CinemaResponse create(
+            @NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest,
+            @NonNull @AuthenticationPrincipal UserDetails principal
+    ) {
         return cinemaService.create(createCinemaRequest);
     }
 
@@ -84,6 +88,7 @@ public class CinemaController {
         return cinemaService.findById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление кино по идентификатору.")

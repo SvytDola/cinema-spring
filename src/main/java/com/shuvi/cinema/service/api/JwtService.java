@@ -2,7 +2,6 @@ package com.shuvi.cinema.service.api;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Сервис jwt.
@@ -35,5 +34,5 @@ public interface JwtService {
      * @param claims авторизации.
      * @return <code>true</code> - если токен валидный, <code>false</code> - если токен не валидный.
      */
-    boolean isTokenValid(@NonNull Claims claims, UserDetails userDetails);
+    boolean isTokenValid(@NonNull Claims claims, String username);
 }

@@ -83,4 +83,6 @@ public class CinemaServiceImpl implements CinemaService {
         CinemaEntity cinemaUpdated = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(cinemaUpdated);
     }
+
+
 }

@@ -7,6 +7,8 @@ import com.shuvi.cinema.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Collection;
+
 /**
  * @author Shuvi
  */
@@ -20,4 +22,6 @@ public interface UserMapper {
     UserEntity toEntity(UserCreateRequest body);
 
     UserResponse toResponse(UserEntity userCreated);
+
+    Collection<UserResponse> toResponseList(Collection<UserEntity> userEntities);
 }
