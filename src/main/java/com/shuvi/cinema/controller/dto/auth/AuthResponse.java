@@ -15,10 +15,10 @@ import lombok.Data;
 public class AuthResponse {
 
     @Schema(description = "Токен авторизации.")
-    private String token;
+    private String access_token;
 
     @Schema(description = "Токен для обновления авторизации.")
-    private String refreshToken;
+    private String refresh_token;
 
     @Schema(description = "Информация о созданном пользователе.")
     private UserResponse user;

@@ -7,9 +7,14 @@ import com.shuvi.cinema.controller.dto.user.UserCreateRequest;
 import com.shuvi.cinema.service.api.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -34,8 +39,8 @@ public class AuthController {
         return authService.register(body);
     }
 
-    @PostMapping("/login")
-    public AuthResponse login(@NonNull @Valid @RequestBody AuthLoginRequest body) {
+    @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public AuthResponse login(@NonNull @Valid AuthLoginRequest body) {
         return authService.login(body);
     }
 

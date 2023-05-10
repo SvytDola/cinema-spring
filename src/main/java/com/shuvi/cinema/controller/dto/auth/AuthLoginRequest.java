@@ -19,7 +19,7 @@ public class AuthLoginRequest {
     @JsonProperty(required = true)
     @NotBlank
     @NotNull
-    private String email;
+    private String username;
 
     @JsonProperty(required = true)
     @NotBlank
