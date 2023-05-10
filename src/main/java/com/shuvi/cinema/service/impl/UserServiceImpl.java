@@ -10,6 +10,7 @@ import com.shuvi.cinema.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,5 +70,10 @@ public class UserServiceImpl implements UserService {
     public Collection<UserResponse> findAll(int start, int size) {
         Collection<UserEntity> userEntities = userRepository.findAll(PageRequest.of(start, size)).toList();
         return userMapper.toResponseList(userEntities);
+    }
+
+    @Override
+    public UserEntity getCurrentUser() {
+        return (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

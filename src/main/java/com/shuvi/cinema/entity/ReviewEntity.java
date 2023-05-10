@@ -33,16 +33,16 @@ public class ReviewEntity {
     private String message;
 
     @Column(name = "created_at", nullable = false)
-    private long createdAt;
+    private Long createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private long updatedAt;
+    @Column(name = "updated_at")
+    private Long updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
     private CinemaEntity cinema;
 
     @Column
-    private int score;
+    private Integer score;
 
 }

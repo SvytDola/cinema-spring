@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 /**
  * @author Shuvi
  */
-@Mapper(config = MappersConfig.class)
+@Mapper(config = MappersConfig.class, uses = CinemaMapper.class)
 public interface ReviewMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -20,5 +20,6 @@ public interface ReviewMapper {
     @Mapping(target = "cinema", ignore = true)
     ReviewEntity toEntity(ReviewCreateRequest reviewCreateRequest);
 
+    @Mapping(target = "cinemaId", source = "cinema.id")
     ReviewResponse toResponse(ReviewEntity reviewEntityCreated);
 }

@@ -1,6 +1,5 @@
 package com.shuvi.cinema.controller.dto.review;
 
-import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.controller.dto.user.UserResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -30,8 +29,8 @@ public class ReviewResponse {
     @Schema(description = "Информация об авторе рецензии.")
     private UserResponse author;
 
-    @Schema(description = "Информация о кино.")
-    private CinemaResponse cinema;
+    @Schema(description = "Идентификатор кино.")
+    private UUID cinemaId;
 
     @Schema(description = "Оценка.")
     private int score;

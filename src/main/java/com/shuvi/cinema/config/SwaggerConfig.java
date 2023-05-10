@@ -8,12 +8,13 @@ import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import java.util.List;
+
+import static com.shuvi.cinema.common.ResourceConstant.AUTH_API_PATH;
 
 /**
  * Конфигурация для Swagger Open Api.
@@ -30,34 +31,31 @@ import java.util.List;
 )
 public class SwaggerConfig {
 
-        private final Environment environment;
+    private final Environment environment;
 
-        @Value("${security.token_url}")
-        private String tokenUrl;
+    public SwaggerConfig(Environment environment) {
+        this.environment = environment;
+    }
 
-        public SwaggerConfig(Environment environment) {
-                this.environment = environment;
-        }
+    @Bean
+    public OpenAPI openAPI() {
+        return (new OpenAPI())
+                .servers(List.of((new Server()).url("/")))
+                .components((new Components())
+                        .addSecuritySchemes("oauth2", (new io.swagger.v3.oas.models.security.SecurityScheme())
+                                .type(SecurityScheme.Type.OAUTH2)
+                                .flows((new OAuthFlows())
+                                        .password((new OAuthFlow())
+                                                .tokenUrl(AUTH_API_PATH + "/login")))))
+                .security(List.of((new io.swagger.v3.oas.models.security.SecurityRequirement()).addList("oauth2")))
+                .info((new io.swagger.v3.oas.models.info.Info()).title(this.environment.getProperty("application-name", ""))
+                        .description(this.environment.getProperty("application-description", ""))
+                        .version(this.environment.getProperty("application-version", "v1.0")));
 
-        @Bean
-        public OpenAPI openAPI() {
-                return (new OpenAPI())
-                        .servers(List.of((new Server()).url("/")))
-                        .components((new Components())
-                                .addSecuritySchemes("oauth2", (new io.swagger.v3.oas.models.security.SecurityScheme())
-                                        .type(SecurityScheme.Type.OAUTH2)
-                                        .flows((new OAuthFlows())
-                                                .password((new OAuthFlow())
-                                                        .tokenUrl(tokenUrl)))))
-                        .security(List.of((new io.swagger.v3.oas.models.security.SecurityRequirement()).addList("oauth2")))
-                        .info((new io.swagger.v3.oas.models.info.Info()).title(this.environment.getProperty("application-name", ""))
-                                .description(this.environment.getProperty("application-description", ""))
-                                .version(this.environment.getProperty("application-version", "v1.0")));
+    }
 
-        }
-
-        @Bean
-        public OpenAPI openApiConfig() {
-                return new SwaggerConfig(environment).openAPI();
-        }
+    @Bean
+    public OpenAPI openApiConfig() {
+        return new SwaggerConfig(environment).openAPI();
+    }
 }

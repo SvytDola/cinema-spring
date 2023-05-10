@@ -3,6 +3,7 @@ package com.shuvi.cinema.service.api;
 
 import com.shuvi.cinema.controller.dto.user.UserCreateRequest;
 import com.shuvi.cinema.controller.dto.user.UserResponse;
+import com.shuvi.cinema.entity.UserEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -46,4 +47,6 @@ public interface UserService extends UserDetailsService {
      * @return Список пользователей.
      */
     Collection<UserResponse> findAll(int start, int size);
+
+    UserEntity getCurrentUser();
 }

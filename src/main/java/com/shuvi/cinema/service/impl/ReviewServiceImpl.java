@@ -10,9 +10,8 @@ import com.shuvi.cinema.mapper.ReviewMapper;
 import com.shuvi.cinema.repository.CinemaRepository;
 import com.shuvi.cinema.repository.ReviewRepository;
 import com.shuvi.cinema.service.api.ReviewService;
+import com.shuvi.cinema.service.api.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +30,12 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
     private final CinemaRepository cinemaRepository;
 
+    private final UserService userService;
+
     @Override
     @Transactional
     public ReviewResponse create(ReviewCreateRequest reviewCreateRequest) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final UserEntity userEntity = (UserEntity) authentication.getPrincipal();
+        final UserEntity userEntity = userService.getCurrentUser();
         final CinemaEntity cinemaEntity = cinemaRepository.findById(UUID.fromString(reviewCreateRequest.getCinemaId()))
                 .orElseThrow(CinemaNotFound::new);
 
@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewEntity.setAuthor(userEntity);
         reviewEntity.setCinema(cinemaEntity);
         reviewEntity.setCreatedAt(System.currentTimeMillis());
-        reviewEntity.setUpdatedAt(System.currentTimeMillis());
+        reviewEntity.setUpdatedAt(null);
 
         ReviewEntity reviewEntityCreated = reviewRepository.save(reviewEntity);
         return reviewMapper.toResponse(reviewEntityCreated);

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Shuvi
  */
-@Mapper(config = MappersConfig.class)
+@Mapper(config = MappersConfig.class, uses = ReviewMapper.class)
 public interface CinemaMapper {
 
     @Mapping(target = "id", ignore = true)
