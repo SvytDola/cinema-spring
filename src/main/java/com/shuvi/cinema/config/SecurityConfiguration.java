@@ -1,4 +1,4 @@
-package com.shuvi.cinema.security;
+package com.shuvi.cinema.config;
 
 import com.shuvi.cinema.filter.JwtAuthenticationFilter;
 import com.shuvi.cinema.service.api.UserService;
