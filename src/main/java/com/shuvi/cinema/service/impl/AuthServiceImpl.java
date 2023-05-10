@@ -32,22 +32,22 @@ public class AuthServiceImpl implements AuthService {
         final String token = jwtService.generateToken(body.getEmail());
         final String refreshToken = jwtService.generateRefreshToken(body.getEmail());
         return AuthResponse.builder()
-                .token(token)
-                .refreshToken(refreshToken)
+                .access_token(token)
+                .refresh_token(refreshToken)
                 .user(userResponse)
                 .build();
     }
 
     @Override
     public AuthResponse login(@NonNull AuthLoginRequest body) {
-        final UserResponse userResponse = userService.getUserByEmail(body.getEmail());
+        final UserResponse userResponse = userService.getUserByEmail(body.getUsername());
 
-        final String token = jwtService.generateToken(body.getEmail());
-        final String refreshToken = jwtService.generateRefreshToken(body.getEmail());
+        final String token = jwtService.generateToken(body.getUsername());
+        final String refreshToken = jwtService.generateRefreshToken(body.getUsername());
 
         return AuthResponse.builder()
-                .token(token)
-                .refreshToken(refreshToken)
+                .access_token(token)
+                .refresh_token(refreshToken)
                 .user(userResponse)
                 .build();
     }
