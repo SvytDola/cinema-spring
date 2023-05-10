@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+ * Реализация сервиса API сущности "Cinema".
+ *
  * @author Shuvi
  */
 @Service

@@ -14,10 +14,19 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * @author Shuvi
+ */
 @Service
 public class JwtServiceImpl implements JwtService {
     @Value("${JWT_KEY}")
     private String JWT_KEY;
+
+    @Value("${application.security.jwt.token.expiration}")
+    private int tokenExpiration;
+
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private int refreshTokenExpiration;
 
     @Override
     public Claims extractClaims(@NonNull String token) {
@@ -29,16 +38,25 @@ public class JwtServiceImpl implements JwtService {
                 .getBody();
     }
 
-    @Override
-    public String generateToken(@NonNull UserDetails userDetails) {
+    public String buildToken(@NonNull String subject, int expiration) {
         final long timestamp = System.currentTimeMillis();
         return Jwts
                 .builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(subject)
                 .setIssuedAt(new Date(timestamp))
-                .setExpiration(new Date(timestamp + 1000 * 60 * 24))
+                .setExpiration(new Date(timestamp + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    @Override
+    public String generateToken(@NonNull String id) {
+        return buildToken(id, tokenExpiration);
+    }
+
+    @Override
+    public String generateRefreshToken(@NonNull String id) {
+        return buildToken(id, refreshTokenExpiration);
     }
 
     @Override
@@ -52,7 +70,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(JWT_KEY);
+        final byte[] keyBytes = Decoders.BASE64.decode(JWT_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

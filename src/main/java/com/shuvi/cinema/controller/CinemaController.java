@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +57,7 @@ public class CinemaController {
             )
     })
     @ResponseStatus(HttpStatus.CREATED)
+    @Secured("ROLE_ADMIN")
     public CinemaResponse create(@NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest) {
         return cinemaService.create(createCinemaRequest);
     }

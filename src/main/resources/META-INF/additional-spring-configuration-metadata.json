@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "application.security.jwt.token.expiration",
+      "type": "java.lang.Integer",
+      "description": "Expiration for auth token."
+    },
+    {
+      "name": "application.security.jwt.refresh-token.expiration",
+      "type": "java.lang.String",
+      "description": "Expiration for refresh auth token."
+    }
+  ]
+}

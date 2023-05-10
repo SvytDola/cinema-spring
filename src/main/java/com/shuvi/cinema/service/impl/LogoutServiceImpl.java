@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author Shuvi
+ */
 @Service
 @RequiredArgsConstructor
 public class LogoutServiceImpl implements LogoutHandler {

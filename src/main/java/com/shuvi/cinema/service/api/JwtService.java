@@ -22,10 +22,12 @@ public interface JwtService {
     /**
      * Возвращает новый сгенерированный токен авторидзации.
      *
-     * @param userDetails Детали пользователя.
+     * @param username Имя или почта пользователя.
      * @return Токен авторизации.
      */
-    String generateToken(@NonNull UserDetails userDetails);
+    String generateToken(@NonNull String username);
+
+    String generateRefreshToken(@NonNull String username);
 
     /**
      * Проверяет валидный ли токен.

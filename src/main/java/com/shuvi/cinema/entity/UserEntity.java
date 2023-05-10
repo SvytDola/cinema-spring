@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -58,6 +59,7 @@ public class UserEntity implements UserDetails {
     private Collection<RoleEntity> roles;
 
     @Override
+    @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
@@ -66,7 +68,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return id.toString();
     }
 
     @Override
