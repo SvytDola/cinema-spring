@@ -18,6 +18,7 @@ public interface CinemaMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "genres", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
     CinemaEntity toEntity(CinemaCreateRequest createCinemaRequest);
 
     CinemaResponse toResponse(CinemaEntity created);

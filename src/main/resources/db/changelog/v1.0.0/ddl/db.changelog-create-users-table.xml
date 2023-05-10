@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="shuvi" id="create-users-table">
+        <createTable tableName="users">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+
+            <column name="email" type="varchar(128)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="surname" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="varchar(2048)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="enabled" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="shuvi" id="add-fk-column-author-id-on-reviews">
+        <addColumn tableName="reviews">
+            <column name="author_id" type="uuid">
+                <constraints nullable="false"
+                             references="reviews(id)"
+                             foreignKeyName="fk_author_id_on_reviews"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="shuvi" id="add-fk-column-user-id-on-users-roles-table">
+        <addColumn tableName="users_roles">
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_id_on_users_roles"
+                             references="users(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="shuvi" id="add-fk-column-user-id-on-tokens-table">
+        <addColumn tableName="tokens">
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_id_on_tokens"
+                             references="users(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
