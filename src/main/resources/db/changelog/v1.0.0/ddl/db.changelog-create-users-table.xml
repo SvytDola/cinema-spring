@@ -57,14 +57,4 @@
         </addColumn>
     </changeSet>
 
-    <changeSet author="shuvi" id="add-fk-column-user-id-on-tokens-table">
-        <addColumn tableName="tokens">
-            <column name="user_id" type="uuid">
-                <constraints nullable="false"
-                             foreignKeyName="fk_user_id_on_tokens"
-                             references="users(id)"/>
-            </column>
-        </addColumn>
-    </changeSet>
-
 </databaseChangeLog>
