@@ -84,5 +84,9 @@ public class CinemaServiceImpl implements CinemaService {
         return cinemaMapper.toResponse(cinemaUpdated);
     }
 
+    @Override
+    public CinemaEntity getById(@NonNull UUID id) {
+        return cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
+    }
 
 }

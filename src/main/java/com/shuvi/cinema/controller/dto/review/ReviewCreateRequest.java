@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 /**
  * Запрос на создание рецензии.
@@ -22,9 +23,8 @@ public class ReviewCreateRequest {
     private String message;
 
     @NotNull
-    @NotBlank
     @JsonProperty(required = true)
-    private String cinemaId;
+    private UUID cinemaId;
 
     @NotNull
     @JsonProperty(required = true)

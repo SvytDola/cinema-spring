@@ -3,6 +3,9 @@ package com.shuvi.cinema.service.api;
 
 import com.shuvi.cinema.controller.dto.review.ReviewCreateRequest;
 import com.shuvi.cinema.controller.dto.review.ReviewResponse;
+import org.springframework.lang.NonNull;
+
+import java.util.UUID;
 
 /**
  * Сервис API сущности "Review".
@@ -17,5 +20,13 @@ public interface ReviewService {
      * @param reviewCreateRequest Детали создаваемой рецензии.
      * @return Информацию о созданной рецензии.
      */
-    ReviewResponse create(ReviewCreateRequest reviewCreateRequest);
+    ReviewResponse create(@NonNull ReviewCreateRequest reviewCreateRequest);
+
+    /**
+     * Поиск рецензии по идентификатору.
+     *
+     * @param id Идентификатор рецензии.
+     * @return Информация о найденной рецензии.
+     */
+    ReviewResponse findById(@NonNull UUID id);
 }

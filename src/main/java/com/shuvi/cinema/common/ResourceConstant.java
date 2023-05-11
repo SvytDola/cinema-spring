@@ -41,4 +41,9 @@ public class ResourceConstant {
      */
     public static final String LOGOUT_API_PATH = AUTH_API_PATH + "/logout";
 
+    /**
+     * Login.
+     */
+    public static final String LOGIN_API_PATH = AUTH_API_PATH + "/login";
+
 }

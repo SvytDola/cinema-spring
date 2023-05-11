@@ -14,7 +14,7 @@ import org.springframework.core.env.Environment;
 
 import java.util.List;
 
-import static com.shuvi.cinema.common.ResourceConstant.AUTH_API_PATH;
+import static com.shuvi.cinema.common.ResourceConstant.LOGIN_API_PATH;
 
 /**
  * Конфигурация для Swagger Open Api.
@@ -46,7 +46,7 @@ public class SwaggerConfig {
                                 .type(SecurityScheme.Type.OAUTH2)
                                 .flows((new OAuthFlows())
                                         .password((new OAuthFlow())
-                                                .tokenUrl(AUTH_API_PATH + "/login")))))
+                                                .tokenUrl(LOGIN_API_PATH)))))
                 .security(List.of((new io.swagger.v3.oas.models.security.SecurityRequirement()).addList("oauth2")))
                 .info((new io.swagger.v3.oas.models.info.Info()).title(this.environment.getProperty("application-name", ""))
                         .description(this.environment.getProperty("application-description", ""))

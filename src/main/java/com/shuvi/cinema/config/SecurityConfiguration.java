@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,7 +33,6 @@ public class SecurityConfiguration {
 
     private final UserService userService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final LogoutHandler logoutHandler;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -78,11 +76,6 @@ public class SecurityConfiguration {
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout()
-                .logoutUrl(LOGOUT_API_PATH)
-                .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()))
-                .and()
                 .build();
     }
 }
