@@ -5,6 +5,7 @@ import com.shuvi.cinema.controller.dto.review.ReviewResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
 import com.shuvi.cinema.entity.ReviewEntity;
 import com.shuvi.cinema.entity.UserEntity;
+import com.shuvi.cinema.exception.AccessDenied;
 import com.shuvi.cinema.exception.review.ReviewNotFound;
 import com.shuvi.cinema.mapper.ReviewMapper;
 import com.shuvi.cinema.repository.ReviewRepository;
@@ -13,6 +14,7 @@ import com.shuvi.cinema.service.api.ReviewService;
 import com.shuvi.cinema.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,4 +59,19 @@ public class ReviewServiceImpl implements ReviewService {
         final ReviewEntity reviewEntity = reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
         return reviewMapper.toResponse(reviewEntity);
     }
+
+    @Override
+    public void deleteById(@NonNull UUID id) {
+        final ReviewEntity reviewEntity = reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
+        final UserEntity user = userService.getCurrentUser();
+
+        if (reviewEntity.getAuthor().getId().equals(user.getId())) {
+            reviewRepository.deleteById(id);
+        } else if (user.getRoles().stream().anyMatch((role) -> role.getName().equals("ROLE_ADMIN"))) {
+            reviewRepository.deleteById(id);
+        }
+
+        throw new AccessDenied();
+    }
+
 }

@@ -12,7 +12,7 @@ import lombok.Data;
 public class RoleResponse {
 
     @Schema(description = "Идентификатор роли.")
-    private long id;
+    private Long id;
 
     @Schema(description = "Название роли.")
     private String name;

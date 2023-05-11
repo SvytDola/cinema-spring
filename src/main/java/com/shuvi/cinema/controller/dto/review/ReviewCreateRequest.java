@@ -28,6 +28,5 @@ public class ReviewCreateRequest {
 
     @NotNull
     @JsonProperty(required = true)
-    private int score;
-
+    private Integer score;
 }

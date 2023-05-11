@@ -22,8 +22,7 @@ import java.util.UUID;
 
 import static com.shuvi.cinema.common.ResourceConstant.REVIEW_API_PATH;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -82,15 +81,15 @@ public class ReviewControllerTest {
 
     @WithMockUser
     ReviewResponse create(String message, int score, UUID cinemaId) throws Exception {
-        ReviewCreateRequest review = ReviewCreateRequest.builder()
+        final ReviewCreateRequest review = ReviewCreateRequest.builder()
                 .score(score)
                 .message(message)
                 .cinemaId(cinemaId)
                 .build();
 
-        String body = mapper.writeValueAsString(review);
+        final String body = mapper.writeValueAsString(review);
 
-        String response = this.mockMvc.perform(post(REVIEW_API_PATH)
+        final String response = this.mockMvc.perform(post(REVIEW_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
@@ -128,6 +127,21 @@ public class ReviewControllerTest {
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists());
+    }
+
+    @Test
+    @WithMockUser
+    void deleteById() throws Exception {
+        final String message = "Tests message.";
+        final int score = 5;
+        final UUID cinemaId = UUID.fromString("554f7afd-4bf3-493c-91d9-8677a39aa1b1");
+
+        final ReviewResponse reviewResponse = create(message, score, cinemaId);
+
+        final String urlTemplate = String.format("%s/%s", REVIEW_API_PATH, reviewResponse.getId());
+        mockMvc.perform(delete(urlTemplate))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
 }

@@ -29,4 +29,11 @@ public interface ReviewService {
      * @return Информация о найденной рецензии.
      */
     ReviewResponse findById(@NonNull UUID id);
+
+    /**
+     * Удаление рецензии.
+     *
+     * @param id Идентификатор рецензии.
+     */
+    void deleteById(@NonNull UUID id);
 }
