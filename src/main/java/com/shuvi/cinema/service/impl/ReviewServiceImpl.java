@@ -64,13 +64,14 @@ public class ReviewServiceImpl implements ReviewService {
         final ReviewEntity reviewEntity = reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
         final UserEntity user = userService.getCurrentUser();
 
-        if (reviewEntity.getAuthor().getId().equals(user.getId())) {
-            reviewRepository.deleteById(id);
-        } else if (user.getRoles().stream().anyMatch((role) -> role.getName().equals("ROLE_ADMIN"))) {
-            reviewRepository.deleteById(id);
+        if (!reviewEntity.getAuthor().getId().equals(user.getId())) {
+            throw new AccessDenied();
+        } else if (user.getRoles().stream().noneMatch((role) -> role.getName().equals("ROLE_ADMIN"))) {
+            throw new AccessDenied();
         }
 
-        throw new AccessDenied();
+        reviewRepository.deleteById(id);
+
     }
 
 }
