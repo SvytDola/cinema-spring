@@ -3,6 +3,7 @@ package com.shuvi.cinema.service.api;
 
 import com.shuvi.cinema.controller.dto.review.ReviewCreateRequest;
 import com.shuvi.cinema.controller.dto.review.ReviewResponse;
+import com.shuvi.cinema.entity.ReviewEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.UUID;
@@ -29,6 +30,14 @@ public interface ReviewService {
      * @return Информация о найденной рецензии.
      */
     ReviewResponse findById(@NonNull UUID id);
+
+    /**
+     * Поиск рецензии по идентификатору.
+     *
+     * @param id Идентификатор рецензии.
+     * @return Информация о найденной рецензии.
+     */
+    ReviewEntity getById(@NonNull UUID id);
 
     /**
      * Удаление рецензии.

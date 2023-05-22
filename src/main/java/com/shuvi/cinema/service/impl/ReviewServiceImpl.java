@@ -5,7 +5,6 @@ import com.shuvi.cinema.controller.dto.review.ReviewResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
 import com.shuvi.cinema.entity.ReviewEntity;
 import com.shuvi.cinema.entity.UserEntity;
-import com.shuvi.cinema.exception.AccessDenied;
 import com.shuvi.cinema.exception.review.ReviewNotFound;
 import com.shuvi.cinema.mapper.ReviewMapper;
 import com.shuvi.cinema.repository.ReviewRepository;
@@ -53,25 +52,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    @Transactional
     public ReviewResponse findById(@NonNull UUID id) {
-        final ReviewEntity reviewEntity = reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
+        final ReviewEntity reviewEntity = this.getById(id);
         return reviewMapper.toResponse(reviewEntity);
     }
 
     @Override
-    public void deleteById(@NonNull UUID id) {
-        final ReviewEntity reviewEntity = reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
-        final UserEntity user = userService.getCurrentUser();
-
-        if (!reviewEntity.getAuthor().getId().equals(user.getId())) {
-            throw new AccessDenied();
-        } else if (user.getRoles().stream().noneMatch((role) -> role.getName().equals("ROLE_ADMIN"))) {
-            throw new AccessDenied();
-        }
-
-        reviewRepository.deleteById(id);
-
+    @Transactional(readOnly = true)
+    public ReviewEntity getById(@NonNull UUID id) {
+        return reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
     }
 
+    @Override
+    public void deleteById(@NonNull UUID id) {
+        reviewRepository.deleteById(id);
+    }
 }
