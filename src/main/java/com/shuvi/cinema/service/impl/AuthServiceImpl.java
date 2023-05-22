@@ -2,11 +2,14 @@ package com.shuvi.cinema.service.impl;
 
 import com.shuvi.cinema.controller.dto.auth.AuthLoginRequest;
 import com.shuvi.cinema.controller.dto.auth.AuthResponse;
+import com.shuvi.cinema.controller.dto.auth.RefreshTokenRequest;
 import com.shuvi.cinema.controller.dto.user.UserCreateRequest;
 import com.shuvi.cinema.controller.dto.user.UserResponse;
+import com.shuvi.cinema.exception.AccessDenied;
 import com.shuvi.cinema.service.api.AuthService;
 import com.shuvi.cinema.service.api.JwtService;
 import com.shuvi.cinema.service.api.UserService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,8 +35,8 @@ public class AuthServiceImpl implements AuthService {
         final String token = jwtService.generateToken(body.getEmail());
         final String refreshToken = jwtService.generateRefreshToken(body.getEmail());
         return AuthResponse.builder()
-                .access_token(token)
-                .refresh_token(refreshToken)
+                .accessToken(token)
+                .refreshToken(refreshToken)
                 .user(userResponse)
                 .build();
     }
@@ -46,9 +49,31 @@ public class AuthServiceImpl implements AuthService {
         final String refreshToken = jwtService.generateRefreshToken(body.getUsername());
 
         return AuthResponse.builder()
-                .access_token(token)
-                .refresh_token(refreshToken)
+                .accessToken(token)
+                .refreshToken(refreshToken)
                 .user(userResponse)
                 .build();
+    }
+
+    @Override
+    public AuthResponse refreshToken(@NonNull RefreshTokenRequest body) {
+
+        final Claims claims = jwtService.extractClaims(body.getRefreshToken());
+        final String email = jwtService.extractUsername(claims);
+
+        if (!jwtService.isTokenValid(claims, email)) {
+            throw new AccessDenied();
+        }
+
+        UserResponse userResponse = userService.getUserByEmail(email);
+
+        final String token = jwtService.generateToken(email);
+
+        return AuthResponse.builder()
+                .accessToken(token)
+                .refreshToken(body.getRefreshToken())
+                .user(userResponse)
+                .build();
+
     }
 }

@@ -48,5 +48,10 @@ public interface UserService extends UserDetailsService {
      */
     Collection<UserResponse> findAll(int start, int size);
 
+    /**
+     * Получить текущего авторизованного пользователя.
+     *
+     * @return Возращает информацию о пользователе.
+     */
     UserEntity getCurrentUser();
 }

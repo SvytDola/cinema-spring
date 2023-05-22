@@ -38,7 +38,7 @@ public class GenreController {
 
     private final GenreService genreService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Запрос на содание жанра.", responses = {
@@ -92,7 +92,7 @@ public class GenreController {
         return genreService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление жанра по идентификатору.", responses = {
@@ -113,7 +113,7 @@ public class GenreController {
         genreService.deleteById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление жанра по идентификатору.", responses = {

@@ -3,13 +3,21 @@ package com.shuvi.cinema.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
+import com.shuvi.cinema.entity.UserEntity;
+import com.shuvi.cinema.repository.UserRepository;
+import com.shuvi.cinema.service.api.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
@@ -36,7 +44,22 @@ public class CinemaControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
+
+    @SpyBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private UserService userService;
+
+
+    @BeforeEach
+    public void setupMock() {
+        UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();
+        Mockito.when(userService.getCurrentUser()).thenReturn(user);
+    }
+
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void createTest() throws Exception {
         String name = "Cinema";
         String description = "Description";
@@ -92,6 +115,7 @@ public class CinemaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void getById() throws Exception {
         String name = "test";
         String description = "description";
@@ -157,6 +181,7 @@ public class CinemaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void deleteById() throws Exception {
         String name = "Test";
         String description = "test description";
@@ -173,6 +198,7 @@ public class CinemaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void updateById() throws Exception {
         String name = "delete";
         String description = "test description";

@@ -63,6 +63,11 @@ public class JwtServiceImpl implements JwtService {
         return claims.getSubject().equals(username) && !isTokenExpired(claims.getExpiration());
     }
 
+    @Override
+    public String extractUsername(Claims claims) {
+        return claims.getSubject();
+    }
+
     private boolean isTokenExpired(Date expiration) {
         return expiration.before(new Date());
     }

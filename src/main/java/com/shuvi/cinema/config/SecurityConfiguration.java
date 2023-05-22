@@ -16,9 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.shuvi.cinema.common.ResourceConstant.*;
-import static org.springframework.http.HttpMethod.*;
-
 /**
  * Конфигурация для авторизации.
  *
@@ -52,24 +49,6 @@ public class SecurityConfiguration {
                 .disable()
                 .requestMatchers()
                 .and()
-                .authorizeHttpRequests(requests ->
-                        requests
-                                .antMatchers(POST, GENRE_API_PATH + "/**").authenticated()
-                                .antMatchers(PUT, GENRE_API_PATH + "/**").authenticated()
-                                .antMatchers(DELETE, GENRE_API_PATH + "/**").authenticated()
-
-                                .antMatchers(POST, CINEMA_API_PATH + "/**").authenticated()
-                                .antMatchers(PUT, CINEMA_API_PATH + "/**").authenticated()
-                                .antMatchers(DELETE, CINEMA_API_PATH + "/**").authenticated()
-
-                                .antMatchers(POST, REVIEW_API_PATH + "/**").authenticated()
-                                .antMatchers(POST, REVIEW_API_PATH + "/**").authenticated()
-                                .antMatchers(DELETE, REVIEW_API_PATH + "/**").authenticated()
-
-                                .antMatchers(POST, USER_API_PATH + "/**").authenticated()
-                                .antMatchers(PUT, USER_API_PATH + "/**").authenticated()
-                                .antMatchers(DELETE, USER_API_PATH + "/**").authenticated()
-                )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

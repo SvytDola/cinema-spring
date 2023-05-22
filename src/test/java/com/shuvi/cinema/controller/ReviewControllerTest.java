@@ -131,7 +131,7 @@ public class ReviewControllerTest {
 
     @Test
     @WithMockUser
-    void deleteById() throws Exception {
+    void deleteByIdTest() throws Exception {
         final String message = "Tests message.";
         final int score = 5;
         final UUID cinemaId = UUID.fromString("554f7afd-4bf3-493c-91d9-8677a39aa1b1");

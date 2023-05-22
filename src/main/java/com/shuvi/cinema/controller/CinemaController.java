@@ -40,6 +40,7 @@ public class CinemaController {
 
     private final CinemaService cinemaService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     @Operation(summary = "Запрос на создание кино.", responses = {
             @ApiResponse(
@@ -66,7 +67,6 @@ public class CinemaController {
         return cinemaService.create(createCinemaRequest);
     }
 
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Запрос на получение всех записей кино.", parameters = {
@@ -88,7 +88,7 @@ public class CinemaController {
         return cinemaService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление кино по идентификатору.")
@@ -96,6 +96,7 @@ public class CinemaController {
         cinemaService.deleteById(id);
     }
 
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление данных о кино.")

@@ -3,6 +3,7 @@ package com.shuvi.cinema.controller;
 
 import com.shuvi.cinema.controller.dto.auth.AuthLoginRequest;
 import com.shuvi.cinema.controller.dto.auth.AuthResponse;
+import com.shuvi.cinema.controller.dto.auth.RefreshTokenRequest;
 import com.shuvi.cinema.controller.dto.user.UserCreateRequest;
 import com.shuvi.cinema.service.api.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,9 @@ public class AuthController {
         return authService.login(body);
     }
 
+    @PostMapping("/refresh-token")
+    public AuthResponse refreshToken(@NonNull @Valid @RequestBody RefreshTokenRequest body) {
+        return authService.refreshToken(body);
+    }
 
 }

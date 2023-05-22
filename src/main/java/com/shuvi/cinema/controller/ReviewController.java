@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ReviewResponse create(@NonNull @Valid @RequestBody ReviewCreateRequest reviewCreateRequest) {
@@ -46,23 +48,25 @@ public class ReviewController {
         return reviewService.findById(id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@NonNull @PathVariable UUID id) {
         final ReviewEntity reviewEntity = reviewService.getById(id);
         final UserEntity user = userService.getCurrentUser();
 
+        // Проверка является ли пользователь автором рецензии.
         if (reviewEntity.getAuthor().getId().equals(user.getId())) {
             reviewService.deleteById(id);
             return;
         }
 
+        // Проверка имеет ли пользователей права администратора.
         if (user.getRoles().stream().anyMatch((role) -> role.getName().equals("ROLE_ADMIN"))) {
             reviewService.deleteById(id);
             return;
         }
 
         throw new AccessDenied();
-
     }
 }
