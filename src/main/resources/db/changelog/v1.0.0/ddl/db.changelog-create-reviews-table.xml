@@ -22,7 +22,7 @@
             </column>
 
             <column name="updated_at" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

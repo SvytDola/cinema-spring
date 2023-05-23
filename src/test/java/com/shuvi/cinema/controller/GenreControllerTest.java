@@ -3,13 +3,21 @@ package com.shuvi.cinema.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.genre.GenreCreateRequest;
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
+import com.shuvi.cinema.entity.UserEntity;
+import com.shuvi.cinema.repository.UserRepository;
+import com.shuvi.cinema.service.api.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
@@ -28,6 +36,19 @@ class GenreControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
+    @SpyBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private UserService userService;
+
+
+    @BeforeEach
+    public void setupMock() {
+        UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();
+        Mockito.when(userService.getCurrentUser()).thenReturn(user);
+    }
+
     @ParameterizedTest
     @CsvFileSource(resources = "/db/changelog/v1.0.0/dml/data/genre.csv", numLinesToSkip = 1)
     void getGenreById(String uuid, String name, String description) throws Exception {
@@ -43,6 +64,7 @@ class GenreControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     void testCreateGenre() throws Exception {
         String genreName = "sad";
         String genreDescription = "Sad genre.";
@@ -128,6 +150,7 @@ class GenreControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void testUpdateGenre() throws Exception {
         String genreName = "test";
         String genreDesc = "test description";
@@ -141,6 +164,7 @@ class GenreControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void testCreateGenreWithNotUniqueName() throws Exception {
         String name = "unique";
         String description = "desc";
@@ -162,6 +186,7 @@ class GenreControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void testDeleteGenreById() throws Exception {
         String name = "delete";
         String description = "desc";
@@ -176,6 +201,7 @@ class GenreControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN"})
     void testDeleteGenreByNotExistId() throws Exception {
         String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
         mockMvc.perform(delete(urlTemplate))

@@ -50,7 +50,7 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "author")
     private Set<ReviewEntity> reviews;
 
-    @ManyToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

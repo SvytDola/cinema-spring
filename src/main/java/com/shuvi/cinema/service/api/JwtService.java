@@ -2,7 +2,6 @@ package com.shuvi.cinema.service.api;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Сервис jwt.
@@ -20,18 +19,34 @@ public interface JwtService {
     Claims extractClaims(@NonNull String token);
 
     /**
-     * Возвращает новый сгенерированный токен авторидзации.
+     * Возвращает новый сгенерированный токен авторизации.
      *
-     * @param userDetails Детали пользователя.
+     * @param username Имя или почта пользователя.
      * @return Токен авторизации.
      */
-    String generateToken(@NonNull UserDetails userDetails);
+    String generateToken(@NonNull String username);
+
+    /**
+     * Возвращает новый сгенерированный токен обновления авторизации.
+     *
+     * @param username Имя или почта пользователя.
+     * @return Токен авторизации.
+     */
+    String generateRefreshToken(@NonNull String username);
 
     /**
      * Проверяет валидный ли токен.
      *
-     * @param claims авторизации.
+     * @param claims Детали авторизации.
      * @return <code>true</code> - если токен валидный, <code>false</code> - если токен не валидный.
      */
-    boolean isTokenValid(@NonNull Claims claims, UserDetails userDetails);
+    boolean isTokenValid(@NonNull Claims claims, String username);
+
+    /**
+     * Получить имя пользователя из деталей авторизации.
+     *
+     * @param claims Детали авторизации.
+     * @return Имя пользователя.
+     */
+    String extractUsername(Claims claims);
 }

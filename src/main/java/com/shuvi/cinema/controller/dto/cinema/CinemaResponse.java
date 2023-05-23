@@ -1,6 +1,8 @@
 package com.shuvi.cinema.controller.dto.cinema;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
+import com.shuvi.cinema.controller.dto.review.ReviewResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ import java.util.UUID;
  * @author Shuvi
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CinemaResponse {
 
     @Schema(description = "Уникальный идентификатор кино")
@@ -29,4 +32,7 @@ public class CinemaResponse {
 
     @Schema(description = "Жанры кино")
     private Set<GenreResponse> genres;
+
+    @Schema(description = "Рецензии кино")
+    private Set<ReviewResponse> reviews;
 }

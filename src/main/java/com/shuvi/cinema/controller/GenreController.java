@@ -11,10 +11,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +38,7 @@ public class GenreController {
 
     private final GenreService genreService;
 
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Запрос на содание жанра.", responses = {
@@ -49,7 +53,10 @@ public class GenreController {
                             schema = @Schema(implementation = ApiError.class)
                     ))
     })
-    public GenreResponse createGenre(@NonNull @RequestBody @Valid GenreCreateRequest createRequest) {
+    public GenreResponse createGenre(
+            @NonNull @RequestBody @Valid GenreCreateRequest createRequest,
+            @AuthenticationPrincipal Principal principal
+    ) {
         return genreService.createGenre(createRequest);
     }
 
@@ -85,6 +92,7 @@ public class GenreController {
         return genreService.findById(id);
     }
 
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление жанра по идентификатору.", responses = {
@@ -105,6 +113,7 @@ public class GenreController {
         genreService.deleteById(id);
     }
 
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление жанра по идентификатору.", responses = {

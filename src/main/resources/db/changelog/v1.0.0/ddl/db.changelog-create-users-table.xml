@@ -41,7 +41,7 @@
         <addColumn tableName="reviews">
             <column name="author_id" type="uuid">
                 <constraints nullable="false"
-                             references="reviews(id)"
+                             references="users(id)"
                              foreignKeyName="fk_author_id_on_reviews"/>
             </column>
         </addColumn>
@@ -52,16 +52,6 @@
             <column name="user_id" type="uuid">
                 <constraints nullable="false"
                              foreignKeyName="fk_user_id_on_users_roles"
-                             references="users(id)"/>
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet author="shuvi" id="add-fk-column-user-id-on-tokens-table">
-        <addColumn tableName="tokens">
-            <column name="user_id" type="uuid">
-                <constraints nullable="false"
-                             foreignKeyName="fk_user_id_on_tokens"
                              references="users(id)"/>
             </column>
         </addColumn>

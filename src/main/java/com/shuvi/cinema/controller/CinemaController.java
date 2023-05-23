@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +40,7 @@ public class CinemaController {
 
     private final CinemaService cinemaService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     @Operation(summary = "Запрос на создание кино.", responses = {
             @ApiResponse(
@@ -56,10 +60,12 @@ public class CinemaController {
             )
     })
     @ResponseStatus(HttpStatus.CREATED)
-    public CinemaResponse create(@NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest) {
+    public CinemaResponse create(
+            @NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest,
+            @NonNull @AuthenticationPrincipal UserDetails principal
+    ) {
         return cinemaService.create(createCinemaRequest);
     }
-
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -82,6 +88,7 @@ public class CinemaController {
         return cinemaService.findById(id);
     }
 
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удаление кино по идентификатору.")
@@ -89,6 +96,7 @@ public class CinemaController {
         cinemaService.deleteById(id);
     }
 
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление данных о кино.")

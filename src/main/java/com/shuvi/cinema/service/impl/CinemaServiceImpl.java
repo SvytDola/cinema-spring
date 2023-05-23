@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+ * Реализация сервиса API сущности "Cinema".
+ *
  * @author Shuvi
  */
 @Service
@@ -61,7 +63,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     @Transactional(readOnly = true)
     public CinemaResponse findById(@NonNull UUID id) {
-        CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
+        CinemaEntity cinemaEntity = this.getById(id);
         return cinemaMapper.toResponse(cinemaEntity);
     }
 
@@ -75,10 +77,19 @@ public class CinemaServiceImpl implements CinemaService {
     public CinemaResponse updateById(@NonNull UUID id, @NonNull CinemaCreateRequest body) {
         CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
         Set<GenreEntity> genres = genreService.findAllByIds(body.getGenres());
+
         CinemaEntity cinemaUpdate = cinemaMapper.toEntity(body);
         cinemaUpdate.setGenres(genres);
+
         cinemaMapper.update(cinemaEntity, cinemaUpdate);
+
         CinemaEntity cinemaUpdated = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(cinemaUpdated);
     }
+
+    @Override
+    public CinemaEntity getById(@NonNull UUID id) {
+        return cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
+    }
+
 }

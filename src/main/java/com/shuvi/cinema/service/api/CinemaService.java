@@ -2,6 +2,7 @@ package com.shuvi.cinema.service.api;
 
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
+import com.shuvi.cinema.entity.CinemaEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -56,4 +57,12 @@ public interface CinemaService {
      * @return Информацию об обновлённом кино.
      */
     CinemaResponse updateById(@NonNull UUID id, @NonNull CinemaCreateRequest body);
+
+    /**
+     * Получение кино по идентификатору.
+     *
+     * @param id Идентификатор кино.
+     * @return Сущность кино.
+     */
+    CinemaEntity getById(@NonNull UUID id);
 }
