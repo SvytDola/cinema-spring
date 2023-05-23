@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 public class RoleResponse {
 
-    @Schema(description = "Идентификатор роли.")
+    @Schema(description = "Идентификатор роли.", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long id;
 
-    @Schema(description = "Название роли.")
+    @Schema(description = "Название роли.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 }

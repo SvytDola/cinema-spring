@@ -15,21 +15,22 @@ import java.util.UUID;
 @Data
 public class UserResponse {
 
-    @Schema(description = "Идентификатор пользователя.")
+    @Schema(description = "Идентификатор пользователя.", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID id;
 
-    @Schema(description = "Имя пользователя.")
+    @Schema(description = "Имя пользователя.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Фамилия пользователя.")
+    @Schema(description = "Фамилия пользователя.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String surname;
 
-    @Schema(description = "Сведения о пользователе.")
+    @Schema(description = "Сведения о пользователе.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
-    @Schema(description = "Указывает, включен или отключен пользователь. Отключенный пользователь не может быть аутентифицирован.")
-    private boolean enabled;
+    @Schema(description = "Указывает, включен или отключен пользователь. Отключенный пользователь не может быть аутентифицирован",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private Boolean enabled;
 
-    @Schema(description = "Роли пользователя.")
+    @Schema(description = "Роли пользователя.", requiredMode = Schema.RequiredMode.REQUIRED)
     private Collection<RoleResponse> roles;
 }

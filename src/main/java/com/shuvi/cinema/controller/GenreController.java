@@ -53,7 +53,7 @@ public class GenreController {
                             schema = @Schema(implementation = ApiError.class)
                     ))
     })
-    public GenreResponse createGenre(
+    public GenreResponse create(
             @NonNull @RequestBody @Valid GenreCreateRequest createRequest,
             @AuthenticationPrincipal Principal principal
     ) {
@@ -140,8 +140,8 @@ public class GenreController {
                             schema = @Schema(implementation = ApiError.class)
                     ))
     })
-    public GenreResponse update(@NonNull @PathVariable UUID id, @NonNull @Valid @RequestBody GenreCreateRequest body) {
-        return genreService.update(id, body);
+    public GenreResponse updateById(@NonNull @PathVariable UUID id, @NonNull @Valid @RequestBody GenreCreateRequest body) {
+        return genreService.updateById(id, body);
     }
 
     @GetMapping

@@ -46,7 +46,7 @@ public interface GenreService {
      * @param body Детали жанра.
      * @return Информацию об обновлённом жанре.
      */
-    GenreResponse update(@NonNull UUID id, @NonNull GenreCreateRequest body);
+    GenreResponse updateById(@NonNull UUID id, @NonNull GenreCreateRequest body);
 
     /**
      * Получить список всех жанров.
