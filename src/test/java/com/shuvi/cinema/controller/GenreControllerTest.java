@@ -3,7 +3,9 @@ package com.shuvi.cinema.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.genre.GenreCreateRequest;
 import com.shuvi.cinema.controller.dto.genre.GenreResponse;
+import com.shuvi.cinema.entity.GenreEntity;
 import com.shuvi.cinema.entity.UserEntity;
+import com.shuvi.cinema.repository.GenreRepository;
 import com.shuvi.cinema.repository.UserRepository;
 import com.shuvi.cinema.service.api.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,13 +22,19 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static com.shuvi.cinema.common.ResourceConstant.GENRE_API_PATH;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Тест контроллера жанров.
+ *
+ * @author Shuvi
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class GenreControllerTest {
@@ -42,21 +50,25 @@ class GenreControllerTest {
     @MockBean
     private UserService userService;
 
+    @Autowired
+    private GenreRepository genreRepository;
+
 
     @BeforeEach
     public void setupMock() {
-        UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();
+        final UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/db/changelog/v1.0.0/dml/data/genre.csv", numLinesToSkip = 1)
-    void getGenreById(String uuid, String name, String description) throws Exception {
-        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, uuid);
+    void findByIdTest(String uuid, String name, String description) throws Exception {
+        final String urlTemplate = String.format("%s/%s", GENRE_API_PATH, uuid);
 
         this.mockMvc.perform(get(urlTemplate))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", equalTo(uuid)))
                 .andExpect(jsonPath("$.name", equalTo(name)))
                 .andExpect(jsonPath("$.description", equalTo(description)));
@@ -65,35 +77,36 @@ class GenreControllerTest {
 
     @Test
     @WithMockUser(authorities = {"ROLE_ADMIN"})
-    void testCreateGenre() throws Exception {
-        String genreName = "sad";
-        String genreDescription = "Sad genre.";
-        GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
+    void createTest() throws Exception {
+        final String genreName = "sad";
+        final String genreDescription = "Sad genre.";
+        final GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(genreName)
                 .description(genreDescription)
                 .build();
 
-        String body = mapper.writeValueAsString(genreCreateRequest);
+        final String body = mapper.writeValueAsString(genreCreateRequest);
 
         this.mockMvc.perform(post(GENRE_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
                 .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", equalTo(genreName)))
                 .andExpect(jsonPath("$.description", equalTo(genreDescription)));
     }
 
     @Test
-    void testCreateGenreWithBlankNameAndDescription() throws Exception {
-        String genreName = "";
-        String genreDescription = "";
-        GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
+    void createWithBlankNameAndDescriptionTest() throws Exception {
+        final String genreName = "";
+        final String genreDescription = "";
+        final GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(genreName)
                 .description(genreDescription)
                 .build();
 
-        String body = mapper.writeValueAsString(genreCreateRequest);
+        final String body = mapper.writeValueAsString(genreCreateRequest);
 
         mockMvc.perform(post(GENRE_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,39 +116,40 @@ class GenreControllerTest {
     }
 
     @Test
-    void testFindGenreByNotExistId() throws Exception {
-        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
+    void findByNotExistIdTest() throws Exception {
+        final String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
         mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(status().isNotFound());
     }
 
-    GenreResponse createGenre(String name, String description) throws Exception {
-        GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
+    GenreResponse create(String name, String description) throws Exception {
+        final GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .build();
-        String body = mapper.writeValueAsString(genreCreateRequest);
+        final String body = mapper.writeValueAsString(genreCreateRequest);
         return mapper.readValue(
                 mockMvc.perform(post(GENRE_API_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body))
                         .andExpect(status().isCreated())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                         .andExpect(jsonPath("$.name", equalTo(name)))
                         .andExpect(jsonPath("$.description", equalTo(description)))
                         .andReturn().getResponse().getContentAsString(),
                 GenreResponse.class);
     }
 
-    GenreResponse updateGenreById(String id, String name, String description) throws Exception {
-        GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
+    GenreResponse updateById(String id, String name, String description) throws Exception {
+        final GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .build();
 
-        String body = mapper.writeValueAsString(genreCreateRequest);
+        final String body = mapper.writeValueAsString(genreCreateRequest);
 
-        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, id);
+        final String urlTemplate = String.format("%s/%s", GENRE_API_PATH, id);
 
-        String response = mockMvc.perform(put(urlTemplate)
+        final String response = mockMvc.perform(put(urlTemplate)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
@@ -151,32 +165,32 @@ class GenreControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void testUpdateGenre() throws Exception {
-        String genreName = "test";
-        String genreDesc = "test description";
-        GenreResponse genreResponse = createGenre(genreName, genreDesc);
+    void updateByIdTest() throws Exception {
+        final String genreName = "test";
+        final String genreDesc = "test description";
+        final GenreResponse genreResponse = create(genreName, genreDesc);
 
-        String updateGenreName = genreName + "update";
-        String updateGenreDescription = genreDesc + "update";
+        final String updateGenreName = genreName + "update";
+        final String updateGenreDescription = genreDesc + "update";
 
-        updateGenreById(genreResponse.getId().toString(), updateGenreName, updateGenreDescription);
+        updateById(genreResponse.getId().toString(), updateGenreName, updateGenreDescription);
 
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void testCreateGenreWithNotUniqueName() throws Exception {
-        String name = "unique";
-        String description = "desc";
+    void createWithNotUniqueNameTest() throws Exception {
+        final String name = "unique";
+        final String description = "desc";
 
-        createGenre(name, description);
+        create(name, description);
 
-        GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
+        final GenreCreateRequest genreCreateRequest = GenreCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .build();
 
-        String body = mapper.writeValueAsString(genreCreateRequest);
+        final String body = mapper.writeValueAsString(genreCreateRequest);
 
         this.mockMvc.perform(post(GENRE_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -187,13 +201,13 @@ class GenreControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void testDeleteGenreById() throws Exception {
-        String name = "delete";
-        String description = "desc";
+    void deleteByIdTest() throws Exception {
+        final String name = "delete";
+        final String description = "desc";
 
-        GenreResponse genreCreated = createGenre(name, description);
+        final GenreResponse genreCreated = create(name, description);
 
-        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, genreCreated.getId());
+        final String urlTemplate = String.format("%s/%s", GENRE_API_PATH, genreCreated.getId());
 
         mockMvc.perform(delete(urlTemplate))
                 .andDo(print())
@@ -202,19 +216,37 @@ class GenreControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void testDeleteGenreByNotExistId() throws Exception {
-        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
+    void deleteByNotExistIdTest() throws Exception {
+        final String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "3fa85f64-5717-4562-b3fc-2c963f66afa6");
         mockMvc.perform(delete(urlTemplate))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testDeleteGenreByNotValidId() throws Exception {
-        String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "-1");
+    void deleteByNotValidIdTest() throws Exception {
+        final String urlTemplate = String.format("%s/%s", GENRE_API_PATH, "-1");
 
         mockMvc.perform(delete(urlTemplate))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void findAllTest() throws Exception {
+        final List<GenreEntity> genres = genreRepository.findAll();
+
+        final Object[] ids = genres.stream().map(genre -> genre.getId().toString()).toArray();
+        final Object[] names = genres.stream().map(GenreEntity::getName).toArray();
+        final Object[] descriptions = genres.stream().map(GenreEntity::getDescription).toArray();
+
+        this.mockMvc.perform(get(GENRE_API_PATH))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(genres.size())))
+                .andExpect(jsonPath("$[*].id", containsInAnyOrder(ids)))
+                .andExpect(jsonPath("$[*].name", containsInAnyOrder(names)))
+                .andExpect(jsonPath("$[*].description", containsInAnyOrder(descriptions)));
     }
 }

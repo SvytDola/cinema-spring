@@ -46,7 +46,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreResponse update(@NonNull UUID id, @NonNull GenreCreateRequest body) {
+    public GenreResponse updateById(@NonNull UUID id, @NonNull GenreCreateRequest body) {
         GenreEntity genreEntityFromDb = genreRepository.findById(id).orElseThrow(GenreNotFound::new);
         GenreEntity genreEntityUpdate = genreMapper.toEntity(id, body);
 

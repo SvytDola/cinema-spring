@@ -18,21 +18,21 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CinemaResponse {
 
-    @Schema(description = "Уникальный идентификатор кино")
+    @Schema(description = "Уникальный идентификатор кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID id;
 
-    @Schema(description = "Название кино")
+    @Schema(description = "Название кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Описание кино")
+    @Schema(description = "Описание кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
-    @Schema(description = "Длительность кино")
+    @Schema(description = "Длительность кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private long duration;
 
-    @Schema(description = "Жанры кино")
+    @Schema(description = "Жанры кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<GenreResponse> genres;
 
-    @Schema(description = "Рецензии кино")
+    @Schema(description = "Рецензии кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<ReviewResponse> reviews;
 }
