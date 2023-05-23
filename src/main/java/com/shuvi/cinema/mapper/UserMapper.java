@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Shuvi
@@ -23,5 +24,5 @@ public interface UserMapper {
 
     UserResponse toResponse(UserEntity userCreated);
 
-    Collection<UserResponse> toResponseList(Collection<UserEntity> userEntities);
+    List<UserResponse> toResponseList(Collection<UserEntity> userEntities);
 }

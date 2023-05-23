@@ -20,8 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import static com.shuvi.cinema.common.ResourceConstant.CINEMA_API_PATH;
@@ -64,7 +63,7 @@ public class CinemaControllerTest {
         String name = "Cinema";
         String description = "Description";
         long duration = 100;
-        Set<UUID> uuidSet = new HashSet<>();
+        List<UUID> uuidSet = List.of();
 
         CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
@@ -90,7 +89,7 @@ public class CinemaControllerTest {
         String name = "";
         String description = "";
         long duration = 100;
-        Set<UUID> uuidSet = new HashSet<>();
+        List<UUID> uuidSet = List.of();
 
         CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
@@ -120,7 +119,7 @@ public class CinemaControllerTest {
         String name = "test";
         String description = "description";
         long duration = 100;
-        Set<UUID> uuids = new HashSet<>();
+        List<UUID> uuids = List.of();
 
         CinemaResponse cinemaCreated = createCinema(name, description, duration, uuids);
 
@@ -139,7 +138,7 @@ public class CinemaControllerTest {
             String name,
             String description,
             long duration,
-            Set<UUID> uuids) throws Exception {
+            List<UUID> uuids) throws Exception {
         CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
@@ -186,7 +185,7 @@ public class CinemaControllerTest {
         String name = "Test";
         String description = "test description";
         long duration = 100;
-        Set<UUID> uuids = Set.of();
+        List<UUID> uuids = List.of();
 
         CinemaResponse cinemaCreated = createCinema(name, description, duration, uuids);
 
@@ -203,7 +202,7 @@ public class CinemaControllerTest {
         String name = "delete";
         String description = "test description";
         long duration = 100;
-        Set<UUID> genreIds = Set.of();
+        List<UUID> genreIds = List.of();
 
         CinemaResponse cinemaCreated = createCinema(name, description, duration, genreIds);
 
@@ -212,7 +211,7 @@ public class CinemaControllerTest {
         String updatedName = "updated";
         String updatedDescription = "updated";
         long updatedDuration = 1000;
-        Set<UUID> updatedUuids = Set.of();
+        List<UUID> updatedUuids = List.of();
 
         CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(updatedName)

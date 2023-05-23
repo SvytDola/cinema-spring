@@ -28,7 +28,7 @@ public class CinemaResponse {
     private String description;
 
     @Schema(description = "Длительность кино", requiredMode = Schema.RequiredMode.REQUIRED)
-    private long duration;
+    private Long duration;
 
     @Schema(description = "Жанры кино", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<GenreResponse> genres;

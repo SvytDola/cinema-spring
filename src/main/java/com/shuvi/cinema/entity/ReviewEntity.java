@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -23,6 +24,7 @@ public class ReviewEntity {
 
     @Id
     @GeneratedValue
+    @Column(unique = true, nullable = false)
     private UUID id;
 
     @ManyToOne
@@ -33,10 +35,10 @@ public class ReviewEntity {
     private String message;
 
     @Column(name = "created_at", nullable = false)
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)

@@ -24,7 +24,7 @@ public class UserCreateRequest {
     @NotNull
     @NotBlank
     @JsonProperty(required = true)
-    private String password;
+    private char[] password;
 
     @NotNull
     @NotBlank

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * DTO для входа в аккаунт.
+ * Запрос на вход в аккаунт.
  *
  * @author Shuvi
  */

@@ -27,7 +27,7 @@ public class UserResponse {
     @Schema(description = "Сведения о пользователе.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
-    @Schema(description = "Указывает, включен или отключен пользователь. Отключенный пользователь не может быть аутентифицирован",
+    @Schema(description = "Указывает, включен или отключен пользователь.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 

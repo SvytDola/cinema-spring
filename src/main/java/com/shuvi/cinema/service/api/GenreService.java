@@ -6,7 +6,6 @@ import com.shuvi.cinema.entity.GenreEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -61,5 +60,5 @@ public interface GenreService {
      * @param uuids Список идентификаторов.
      * @return Список сущностей "Genre".
      */
-    Set<GenreEntity> findAllByIds(Set<UUID> uuids);
+    List<GenreEntity> findAllByIds(List<UUID> uuids);
 }

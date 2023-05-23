@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -27,10 +28,10 @@ public class ReviewResponse {
     private String message;
 
     @Schema(description = "Время создания.", requiredMode = RequiredMode.REQUIRED)
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @Schema(description = "Время обновления.", requiredMode = RequiredMode.NOT_REQUIRED)
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
 
     @Schema(description = "Информация об авторе рецензии.", requiredMode = RequiredMode.REQUIRED)
     private UserResponse author;

@@ -16,6 +16,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -28,11 +29,8 @@ import java.util.UUID;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-
     private final ReviewMapper reviewMapper;
-
     private final CinemaService cinemaService;
-
     private final UserService userService;
 
     @Override
@@ -45,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewEntity.setAuthor(userEntity);
         reviewEntity.setCinema(cinemaEntity);
-        reviewEntity.setCreatedAt(System.currentTimeMillis());
+        reviewEntity.setCreatedAt(LocalDateTime.now());
 
         final ReviewEntity reviewEntityCreated = reviewRepository.save(reviewEntity);
         return reviewMapper.toResponse(reviewEntityCreated);
@@ -53,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewResponse findById(@NonNull UUID id) {
-        final ReviewEntity reviewEntity = this.getById(id);
+        final ReviewEntity reviewEntity = getById(id);
         return reviewMapper.toResponse(reviewEntity);
     }
 

@@ -84,7 +84,7 @@ public class CinemaController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Запрос на получение записи по идентификатору.")
-    public CinemaResponse find(@NonNull @PathVariable UUID id) {
+    public CinemaResponse findById(@NonNull @PathVariable UUID id) {
         return cinemaService.findById(id);
     }
 

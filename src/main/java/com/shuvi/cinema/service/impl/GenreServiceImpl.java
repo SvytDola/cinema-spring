@@ -12,7 +12,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -63,7 +62,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Set<GenreEntity> findAllByIds(Set<UUID> uuids) {
+    public List<GenreEntity> findAllByIds(List<UUID> uuids) {
         return genreRepository.findByIdIn(uuids);
     }
 }

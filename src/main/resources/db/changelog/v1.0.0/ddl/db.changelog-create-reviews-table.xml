@@ -17,11 +17,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created_at" type="bigint">
+            <column name="created_at" type="datetime">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="updated_at" type="bigint">
+            <column name="updated_at" type="datetime">
                 <constraints nullable="true"/>
             </column>
         </createTable>

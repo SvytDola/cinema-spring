@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -58,8 +56,6 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userMapper.toEntity(body);
 
         userEntity.setEnabled(true);
-        userEntity.setRoles(List.of());
-        userEntity.setReviews(Set.of());
 
         UserEntity userCreated = userRepository.save(userEntity);
         return userMapper.toResponse(userCreated);

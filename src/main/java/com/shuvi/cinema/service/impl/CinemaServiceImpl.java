@@ -10,6 +10,7 @@ import com.shuvi.cinema.repository.CinemaRepository;
 import com.shuvi.cinema.service.api.CinemaService;
 import com.shuvi.cinema.service.api.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -39,7 +39,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     public CinemaResponse create(@NonNull CinemaCreateRequest createCinemaRequest) {
         CinemaEntity cinemaEntity = cinemaMapper.toEntity(createCinemaRequest);
-        Set<GenreEntity> genres = genreService.findAllByIds(createCinemaRequest.getGenres());
+        List<GenreEntity> genres = genreService.findAllByIds(createCinemaRequest.getGenres());
         cinemaEntity.setGenres(genres);
         CinemaEntity created = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(created);
@@ -49,14 +49,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Transactional(readOnly = true)
     public List<CinemaResponse> findAll(int start, int size, @Nullable List<String> genres) {
         Pageable pageable = PageRequest.of(start, size);
-        List<CinemaEntity> cinemaEntities;
-
-        if (genres == null) {
-            cinemaEntities = cinemaRepository.findAll(pageable).stream().toList();
-        } else {
-            cinemaEntities = cinemaRepository.findByGenresNameIn(genres, pageable);
-        }
-
+        List<CinemaEntity> cinemaEntities = cinemaRepository.findByGenresNameIn(genres, pageable);
         return cinemaMapper.toResponseList(cinemaEntities);
     }
 
@@ -69,14 +62,18 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Override
     public void deleteById(@NonNull UUID id) {
-        cinemaRepository.deleteById(id);
+        try {
+            cinemaRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new CinemaNotFound();
+        }
     }
 
     @Override
     @Transactional
     public CinemaResponse updateById(@NonNull UUID id, @NonNull CinemaCreateRequest body) {
         CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
-        Set<GenreEntity> genres = genreService.findAllByIds(body.getGenres());
+        List<GenreEntity> genres = genreService.findAllByIds(body.getGenres());
 
         CinemaEntity cinemaUpdate = cinemaMapper.toEntity(body);
         cinemaUpdate.setGenres(genres);
