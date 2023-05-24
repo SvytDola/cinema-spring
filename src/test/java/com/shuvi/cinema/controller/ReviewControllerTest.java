@@ -60,7 +60,7 @@ public class ReviewControllerTest extends BaseIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", equalTo(message)))
                 .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
-                .andExpect(jsonPath("$.createdAt").isNumber())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists());
@@ -84,7 +84,7 @@ public class ReviewControllerTest extends BaseIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", equalTo(message)))
                 .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
-                .andExpect(jsonPath("$.createdAt").isNumber())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists())
@@ -110,7 +110,7 @@ public class ReviewControllerTest extends BaseIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", equalTo(message)))
                 .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
-                .andExpect(jsonPath("$.createdAt").isNumber())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists());

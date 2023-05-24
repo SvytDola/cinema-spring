@@ -12,11 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.CharBuffer;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -57,11 +54,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse create(@NonNull UserCreateRequest body) {
-        String password = passwordEncoder.encode(CharBuffer.wrap(body.getPassword()));
 
         UserEntity userEntity = userMapper.toEntity(body);
-        userEntity.setPassword(password);
-
+        userEntity.setPassword(String.valueOf(body.getPassword()));
         userEntity.setEnabled(true);
 
         UserEntity userCreated = userRepository.save(userEntity);

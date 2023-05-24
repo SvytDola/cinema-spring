@@ -48,7 +48,7 @@ JWT_KEY=3677397A24432646294A404E635266556A586E5A7234753778214125442A472D
 Для начала клонируем проект.
 
 ```console
-https://github.com/SvytDola/cinema-spring.git
+git clone https://github.com/SvytDola/cinema-spring.git
 ```
 
 После необходимо его собрать.

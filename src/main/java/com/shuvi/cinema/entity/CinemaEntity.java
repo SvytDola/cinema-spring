@@ -34,7 +34,7 @@ public class CinemaEntity {
     private String description;
 
     @Column(nullable = false)
-    private long duration;
+    private Long duration;
 
     @ManyToMany(cascade = {
             CascadeType.DETACH,
