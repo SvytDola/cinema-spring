@@ -59,7 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional(readOnly = true)
     public ReviewEntity getById(@NonNull UUID id) {
-        return reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
+        return reviewRepository.findById(id).orElseThrow(() -> ReviewNotFound.createById(id));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
         try {
             reviewRepository.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new ReviewNotFound();
+            throw ReviewNotFound.createById(id);
         }
     }
 }

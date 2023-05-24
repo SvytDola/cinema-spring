@@ -24,6 +24,14 @@ public interface GenreService {
     GenreResponse createGenre(@NonNull GenreCreateRequest createGenreRequest);
 
     /**
+     * Получить GenreEntity по id.
+     *
+     * @param id Идентификатор жанра.
+     * @return Запись из таблицы жанров.
+     */
+    GenreEntity getById(UUID id);
+
+    /**
      * Получить DTO по идентификатору жанра..
      *
      * @param id Идентификатор жанра.

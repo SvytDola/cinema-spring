@@ -54,4 +54,11 @@ public interface UserService extends UserDetailsService {
      * @return Возращает информацию о пользователе.
      */
     UserEntity getCurrentUser();
+
+    /**
+     * Удаление пользователя по идентификатору.
+     *
+     * @param id Идентификатор пользователя.
+     */
+    void deleteById(UUID id);
 }

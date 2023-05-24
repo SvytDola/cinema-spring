@@ -1,9 +1,19 @@
 package com.shuvi.cinema.exception.cinema;
 
-import com.shuvi.cinema.exception.BaseException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.shuvi.cinema.exception.BaseNotFoundException;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Cinema not found.")
-public class CinemaNotFound extends BaseException {
+import java.util.UUID;
+
+public class CinemaNotFound extends BaseNotFoundException {
+
+    public CinemaNotFound(String message) {
+        super(message);
+    }
+
+    private static final String CINEMA_WITH_ID_NOT_FOUND = "Cinema with id %s not found.";
+
+    public static CinemaNotFound createById(UUID id) {
+        return new CinemaNotFound(CINEMA_WITH_ID_NOT_FOUND.formatted(id));
+    }
+
 }

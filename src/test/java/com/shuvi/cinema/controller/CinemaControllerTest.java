@@ -43,7 +43,6 @@ public class CinemaControllerTest extends BaseIntegrationTest {
     @Autowired
     private CinemaRepository cinemaRepository;
 
-
     @BeforeEach
     public void setupMock() {
         UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();

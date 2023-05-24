@@ -36,25 +36,25 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Override
     public CinemaResponse create(@NonNull CinemaCreateRequest createCinemaRequest) {
-        CinemaEntity cinemaEntity = cinemaMapper.toEntity(createCinemaRequest);
-        List<GenreEntity> genres = genreService.findAllByIds(createCinemaRequest.getGenres());
+        final CinemaEntity cinemaEntity = cinemaMapper.toEntity(createCinemaRequest);
+        final List<GenreEntity> genres = genreService.findAllByIds(createCinemaRequest.getGenres());
         cinemaEntity.setGenres(genres);
-        CinemaEntity created = cinemaRepository.save(cinemaEntity);
+        final CinemaEntity created = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(created);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<CinemaResponse> findAll(int start, int size, @Nullable List<String> genres) {
-        Pageable pageable = PageRequest.of(start, size);
-        List<CinemaEntity> cinemaEntities = cinemaRepository.findByGenresNameIn(genres, pageable);
+        final Pageable pageable = PageRequest.of(start, size);
+        final List<CinemaEntity> cinemaEntities = cinemaRepository.findByGenresNameIn(genres, pageable);
         return cinemaMapper.toResponseList(cinemaEntities);
     }
 
     @Override
     @Transactional(readOnly = true)
     public CinemaResponse findById(@NonNull UUID id) {
-        CinemaEntity cinemaEntity = getById(id);
+        final CinemaEntity cinemaEntity = getById(id);
         return cinemaMapper.toResponse(cinemaEntity);
     }
 
@@ -63,28 +63,28 @@ public class CinemaServiceImpl implements CinemaService {
         try {
             cinemaRepository.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new CinemaNotFound();
+            throw CinemaNotFound.createById(id);
         }
     }
 
     @Override
     @Transactional
     public CinemaResponse updateById(@NonNull UUID id, @NonNull CinemaCreateRequest body) {
-        CinemaEntity cinemaEntity = cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
-        List<GenreEntity> genres = genreService.findAllByIds(body.getGenres());
+        final CinemaEntity cinemaEntity = getById(id);
+        final List<GenreEntity> genres = genreService.findAllByIds(body.getGenres());
 
-        CinemaEntity cinemaUpdate = cinemaMapper.toEntity(body);
+        final CinemaEntity cinemaUpdate = cinemaMapper.toEntity(body);
         cinemaUpdate.setGenres(genres);
 
         cinemaMapper.update(cinemaEntity, cinemaUpdate);
 
-        CinemaEntity cinemaUpdated = cinemaRepository.save(cinemaEntity);
+        final CinemaEntity cinemaUpdated = cinemaRepository.save(cinemaEntity);
         return cinemaMapper.toResponse(cinemaUpdated);
     }
 
     @Override
     public CinemaEntity getById(@NonNull UUID id) {
-        return cinemaRepository.findById(id).orElseThrow(CinemaNotFound::new);
+        return cinemaRepository.findById(id).orElseThrow(() -> CinemaNotFound.createById(id));
     }
 
 }

@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse register(@NonNull UserCreateRequest body) {
         body.setPassword(passwordEncoder.encode(CharBuffer.wrap(body.getPassword())).toCharArray());
-        UserResponse userResponse = userService.create(body);
+        final UserResponse userResponse = userService.create(body);
         final String token = jwtService.generateToken(body.getEmail());
         final String refreshToken = jwtService.generateRefreshToken(body.getEmail());
         return AuthResponse.builder()

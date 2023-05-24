@@ -118,6 +118,30 @@ public class ReviewControllerTest extends BaseIntegrationTest {
 
     @Test
     @WithMockUser
+    void findAllTest() throws Exception {
+        final String message = "Это рецензия на фильм.";
+        final int score = 10;
+        final UUID cinemaId = UUID.fromString("554f7afd-4bf3-493c-91d9-8677a39aa1b1");
+
+        final ReviewResponse reviewResponse = create(message, score, cinemaId);
+
+        final String urlTemplate = String.format("%s/%s", REVIEW_API_PATH, reviewResponse.getId());
+
+        mockMvc.perform(get(urlTemplate))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo(message)))
+                .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
+                .andExpect(jsonPath("$.updatedAt").doesNotExist())
+                .andExpect(jsonPath("$.score", equalTo(score)))
+                .andExpect(jsonPath("$.author").exists());
+    }
+
+
+    @Test
+    @WithMockUser
     void deleteByIdTest() throws Exception {
         final String message = "Tests message.";
         final int score = 5;

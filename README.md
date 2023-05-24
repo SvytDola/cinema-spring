@@ -67,3 +67,5 @@ docker build -t cinema-server .
 ```console
 docker-compose up
 ```
+
+***NOTE:*** _Вам повезёт, если оно запуститься._

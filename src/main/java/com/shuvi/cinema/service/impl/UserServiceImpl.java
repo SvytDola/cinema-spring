@@ -8,6 +8,7 @@ import com.shuvi.cinema.mapper.UserMapper;
 import com.shuvi.cinema.repository.UserRepository;
 import com.shuvi.cinema.service.api.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,37 +42,47 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserResponse getUserByEmail(String email) {
-        final UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(UserNotFound::new);
+        final UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                () -> UserNotFound.createByUsername(email));
         return userMapper.toResponse(userEntity);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserResponse findById(@NonNull UUID id) {
-        final UserEntity userEntity = userRepository.findById(id).orElseThrow(UserNotFound::new);
+        final UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> UserNotFound.createById(id));
         return userMapper.toResponse(userEntity);
     }
 
     @Override
     public UserResponse create(@NonNull UserCreateRequest body) {
 
-        UserEntity userEntity = userMapper.toEntity(body);
+        final UserEntity userEntity = userMapper.toEntity(body);
         userEntity.setPassword(String.valueOf(body.getPassword()));
         userEntity.setEnabled(true);
 
-        UserEntity userCreated = userRepository.save(userEntity);
+        final UserEntity userCreated = userRepository.save(userEntity);
         return userMapper.toResponse(userCreated);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserResponse> findAll(int start, int size) {
-        List<UserEntity> userEntities = userRepository.findAll(PageRequest.of(start, size)).toList();
+        final List<UserEntity> userEntities = userRepository.findAll(PageRequest.of(start, size)).toList();
         return userMapper.toResponseList(userEntities);
     }
 
     @Override
     public UserEntity getCurrentUser() {
         return (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        try {
+            userRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw UserNotFound.createById(id);
+        }
     }
 }
