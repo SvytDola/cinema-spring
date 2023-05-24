@@ -20,6 +20,7 @@ public interface UserMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "password", ignore = true)
     UserEntity toEntity(UserCreateRequest body);
 
     UserResponse toResponse(UserEntity userCreated);

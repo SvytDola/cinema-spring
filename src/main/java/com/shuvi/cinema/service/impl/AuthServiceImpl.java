@@ -12,7 +12,6 @@ import com.shuvi.cinema.service.api.UserService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,11 +25,10 @@ public class AuthServiceImpl implements AuthService {
 
     private final JwtService jwtService;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AuthResponse register(@NonNull UserCreateRequest body) {
-        body.setPassword(passwordEncoder.encode(body.getPassword()));
+
         UserResponse userResponse = userService.create(body);
         final String token = jwtService.generateToken(body.getEmail());
         final String refreshToken = jwtService.generateRefreshToken(body.getEmail());

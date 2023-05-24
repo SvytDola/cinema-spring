@@ -10,7 +10,6 @@ import java.util.UUID;
 /**
  * @author Shuvi
  */
-public interface CinemaRepository extends
-        JpaRepository<CinemaEntity, UUID> {
+public interface CinemaRepository extends JpaRepository<CinemaEntity, UUID> {
     List<CinemaEntity> findByGenresNameIn(List<String> genres, Pageable pageable);
 }

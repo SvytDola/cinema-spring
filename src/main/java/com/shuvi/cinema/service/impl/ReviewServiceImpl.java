@@ -12,6 +12,7 @@ import com.shuvi.cinema.service.api.CinemaService;
 import com.shuvi.cinema.service.api.ReviewService;
 import com.shuvi.cinema.service.api.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteById(@NonNull UUID id) {
-        reviewRepository.deleteById(id);
+        try {
+            reviewRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ReviewNotFound();
+        }
     }
 }

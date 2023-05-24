@@ -1,16 +1,11 @@
 package com.shuvi.cinema.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.repository.UserRepository;
 import com.shuvi.cinema.service.api.UserService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static com.shuvi.cinema.common.ResourceConstant.LOGIN_API_PATH;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,21 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Shuvi
  */
-@SpringBootTest
-@AutoConfigureMockMvc
-public class AuthControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
+public class AuthControllerTest extends BaseIntegrationTest {
 
     @SpyBean
     private UserRepository userRepository;
 
     @MockBean
     private UserService userService;
-
-    @Autowired
-    private ObjectMapper mapper;
 
 
     @Test

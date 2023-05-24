@@ -7,13 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import static com.shuvi.cinema.common.ResourceConstant.CINEMA_API_PATH;
@@ -26,9 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Shuvi
  */
-@SpringBootTest
-@AutoConfigureMockMvc
-public class UserControllerTest {
+public class UserControllerTest extends BaseIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,19 +33,19 @@ public class UserControllerTest {
 
     @Test
     void createTest() throws Exception {
-        String name = "Cinema";
-        String description = "Description";
-        long duration = 100;
-        Set<UUID> uuidSet = new HashSet<>();
+        final String name = "Cinema";
+        final String description = "Description";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
+        final CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .duration(duration)
-                .genres(uuidSet)
+                .genres(genres)
                 .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(post(CINEMA_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -64,19 +59,19 @@ public class UserControllerTest {
 
     @Test
     void createWithBlankNameAndDescription() throws Exception {
-        String name = "";
-        String description = "";
-        long duration = 100;
-        Set<UUID> uuidSet = new HashSet<>();
+        final String name = "";
+        final String description = "";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
+        final CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .duration(duration)
-                .genres(uuidSet)
+                .genres(genres)
                 .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(post(CINEMA_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,14 +88,14 @@ public class UserControllerTest {
 
     @Test
     void getById() throws Exception {
-        String name = "test";
-        String description = "description";
-        long duration = 100;
-        Set<UUID> uuids = new HashSet<>();
+        final String name = "test";
+        final String description = "description";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaResponse cinemaCreated = createCinema(name, description, duration, uuids);
+        final CinemaResponse cinemaCreated = createCinema(name, description, duration, genres);
 
-        String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
+        final String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
 
         mockMvc.perform(get(urlTemplate))
                 .andDo(print())
@@ -115,15 +110,15 @@ public class UserControllerTest {
             String name,
             String description,
             long duration,
-            Set<UUID> uuids) throws Exception {
-        CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
+            List<UUID> genres) throws Exception {
+        final CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .duration(duration)
-                .genres(uuids)
+                .genres(genres)
                 .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         return mapper.readValue(
                 mockMvc.perform(post(CINEMA_API_PATH)
@@ -145,7 +140,7 @@ public class UserControllerTest {
             String name,
             String description,
             int duration) throws Exception {
-        String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, id);
+        final String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, id);
 
         mockMvc.perform(get(urlTemplate))
                 .andDo(print())
@@ -158,14 +153,14 @@ public class UserControllerTest {
 
     @Test
     void deleteById() throws Exception {
-        String name = "Test";
-        String description = "test description";
-        long duration = 100;
-        Set<UUID> uuids = Set.of();
+        final String name = "Test";
+        final String description = "test description";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaResponse cinemaCreated = createCinema(name, description, duration, uuids);
+        final CinemaResponse cinemaCreated = createCinema(name, description, duration, genres);
 
-        String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
+        final String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
 
         mockMvc.perform(delete(urlTemplate)).andDo(print())
                 .andExpect(status().isNoContent());
@@ -174,27 +169,28 @@ public class UserControllerTest {
 
     @Test
     void updateById() throws Exception {
-        String name = "delete";
-        String description = "test description";
-        long duration = 100;
-        Set<UUID> genreIds = Set.of();
+        final String name = "delete";
+        final String description = "test description";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaResponse cinemaCreated = createCinema(name, description, duration, genreIds);
+        final CinemaResponse cinemaCreated = createCinema(name, description, duration, genres);
 
-        String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
+        final String urlTemplate = String.format("%s/%s", CINEMA_API_PATH, cinemaCreated.getId());
 
-        String updatedName = "updated";
-        String updatedDescription = "updated";
-        long updatedDuration = 1000;
-        Set<UUID> updatedUuids = Set.of();
+        final String updatedName = "updated";
+        final String updatedDescription = "updated";
+        final long updatedDuration = 1000;
+        final List<UUID> updatedGenres = List.of();
 
-        CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
+        final CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(updatedName)
                 .description(updatedDescription)
                 .duration(updatedDuration)
-                .genres(updatedUuids).build();
+                .genres(updatedGenres)
+                .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(put(urlTemplate).contentType(MediaType.APPLICATION_JSON).content(body))
                 .andDo(print())

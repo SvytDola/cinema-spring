@@ -1,6 +1,5 @@
 package com.shuvi.cinema.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.entity.UserEntity;
@@ -11,14 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,16 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Shuvi
  */
-@SpringBootTest
-@AutoConfigureMockMvc
-public class CinemaControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper mapper;
-
+public class CinemaControllerTest extends BaseIntegrationTest {
 
     @SpyBean
     private UserRepository userRepository;
@@ -89,13 +75,13 @@ public class CinemaControllerTest {
         String name = "";
         String description = "";
         long duration = 100;
-        List<UUID> uuidSet = List.of();
+        List<UUID> genres = List.of();
 
         CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .duration(duration)
-                .genres(uuidSet)
+                .genres(genres)
                 .build();
 
         String body = mapper.writeValueAsString(cinemaCreateRequest);
@@ -107,8 +93,10 @@ public class CinemaControllerTest {
     }
 
     @Test
-    void getInfoByGenreNames() throws Exception {
-        mockMvc.perform(get(String.format("%s?start=0&size=100", CINEMA_API_PATH)))
+    void findAll() throws Exception {
+        mockMvc.perform(get(CINEMA_API_PATH)
+                        .queryParam("start", "0")
+                        .queryParam("size", "100"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

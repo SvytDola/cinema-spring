@@ -12,10 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.nio.CharBuffer;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -29,12 +31,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
     public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(String.format("User with username `%s` not found.", username)));
     }
 
     @Override
@@ -53,7 +57,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse create(@NonNull UserCreateRequest body) {
+        String password = passwordEncoder.encode(CharBuffer.wrap(body.getPassword()));
+
         UserEntity userEntity = userMapper.toEntity(body);
+        userEntity.setPassword(password);
 
         userEntity.setEnabled(true);
 
@@ -63,8 +70,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<UserResponse> findAll(int start, int size) {
-        Collection<UserEntity> userEntities = userRepository.findAll(PageRequest.of(start, size)).toList();
+    public List<UserResponse> findAll(int start, int size) {
+        List<UserEntity> userEntities = userRepository.findAll(PageRequest.of(start, size)).toList();
         return userMapper.toResponseList(userEntities);
     }
 

@@ -42,7 +42,7 @@ public class UserEntity implements UserDetails {
     private String description;
 
     @Column(nullable = false)
-    private char[] password;
+    private String password;
 
     @Column(nullable = false)
     private boolean enabled;

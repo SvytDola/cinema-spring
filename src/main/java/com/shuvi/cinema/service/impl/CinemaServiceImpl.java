@@ -31,9 +31,7 @@ import java.util.UUID;
 public class CinemaServiceImpl implements CinemaService {
 
     private final CinemaMapper cinemaMapper;
-
     private final GenreService genreService;
-
     private final CinemaRepository cinemaRepository;
 
     @Override
@@ -56,7 +54,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     @Transactional(readOnly = true)
     public CinemaResponse findById(@NonNull UUID id) {
-        CinemaEntity cinemaEntity = this.getById(id);
+        CinemaEntity cinemaEntity = getById(id);
         return cinemaMapper.toResponse(cinemaEntity);
     }
 
