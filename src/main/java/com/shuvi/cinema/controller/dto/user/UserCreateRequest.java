@@ -22,7 +22,6 @@ public class UserCreateRequest {
     private String email;
 
     @NotNull
-    @NotBlank
     @JsonProperty(required = true)
     private char[] password;
 

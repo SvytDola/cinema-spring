@@ -30,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Тест контроллера кино.
+ *
  * @author Shuvi
  */
 public class CinemaControllerTest extends BaseIntegrationTest {
@@ -45,26 +47,26 @@ public class CinemaControllerTest extends BaseIntegrationTest {
 
     @BeforeEach
     public void setupMock() {
-        UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();
+        final UserEntity user = userRepository.findAll().stream().findFirst().orElseThrow();
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void createTest() throws Exception {
-        String name = "Cinema";
-        String description = "Description";
-        long duration = 100;
-        List<UUID> genres = List.of();
+        final String name = "Cinema";
+        final String description = "Description";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
+        final CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .duration(duration)
                 .genres(genres)
                 .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(post(CINEMA_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,19 +81,19 @@ public class CinemaControllerTest extends BaseIntegrationTest {
 
     @Test
     void createWithEmptyNameAndDescriptionTest() throws Exception {
-        String name = "";
-        String description = "";
-        long duration = 100;
-        List<UUID> genres = List.of();
+        final String name = "";
+        final String description = "";
+        final long duration = 100;
+        final List<UUID> genres = List.of();
 
-        CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
+        final CinemaCreateRequest cinemaCreateRequest = CinemaCreateRequest.builder()
                 .name(name)
                 .description(description)
                 .duration(duration)
                 .genres(genres)
                 .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         mockMvc.perform(post(CINEMA_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -138,7 +140,7 @@ public class CinemaControllerTest extends BaseIntegrationTest {
                 .genres(uuids)
                 .build();
 
-        String body = mapper.writeValueAsString(cinemaCreateRequest);
+        final String body = mapper.writeValueAsString(cinemaCreateRequest);
 
         return mapper.readValue(
                 mockMvc.perform(post(CINEMA_API_PATH)

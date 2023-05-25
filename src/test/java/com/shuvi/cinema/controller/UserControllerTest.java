@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Тест контроллера пользователей.
+ *
  * @author Shuvi
  */
 public class UserControllerTest extends BaseIntegrationTest {

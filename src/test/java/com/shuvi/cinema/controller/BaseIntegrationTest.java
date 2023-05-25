@@ -7,8 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
- * Тест контроллера жанров.
- *
  * @author Shuvi
  */
 @SpringBootTest

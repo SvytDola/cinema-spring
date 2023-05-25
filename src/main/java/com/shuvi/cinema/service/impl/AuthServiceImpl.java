@@ -26,8 +26,8 @@ import java.nio.CharBuffer;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final JwtService jwtService;
     private final UserService userService;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     @Override

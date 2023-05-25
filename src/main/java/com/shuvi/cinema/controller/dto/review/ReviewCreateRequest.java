@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 /**
@@ -27,6 +28,7 @@ public class ReviewCreateRequest {
     private UUID cinemaId;
 
     @NotNull
+    @Size(max = 10)
     @JsonProperty(required = true)
     private Integer score;
 }

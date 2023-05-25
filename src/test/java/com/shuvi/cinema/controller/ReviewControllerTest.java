@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Тест контроллера рецензий.
+ *
  * @author Shuvi
  */
 public class ReviewControllerTest extends BaseIntegrationTest {
