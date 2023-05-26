@@ -1,6 +1,5 @@
 package com.shuvi.cinema.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shuvi.cinema.controller.dto.review.ReviewCreateRequest;
 import com.shuvi.cinema.controller.dto.review.ReviewResponse;
 import com.shuvi.cinema.entity.UserEntity;
@@ -9,14 +8,10 @@ import com.shuvi.cinema.service.api.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -27,23 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Тест контроллера рецензий.
+ *
  * @author Shuvi
  */
-@SpringBootTest
-@AutoConfigureMockMvc
-public class ReviewControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
+public class ReviewControllerTest extends BaseIntegrationTest {
 
     @SpyBean
     private UserRepository userRepository;
 
     @MockBean
     private UserService userService;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @BeforeEach
     public void setupMock() {
@@ -73,7 +62,7 @@ public class ReviewControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", equalTo(message)))
                 .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
-                .andExpect(jsonPath("$.createdAt").isNumber())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists());
@@ -97,7 +86,7 @@ public class ReviewControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", equalTo(message)))
                 .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
-                .andExpect(jsonPath("$.createdAt").isNumber())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists())
@@ -123,11 +112,35 @@ public class ReviewControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", equalTo(message)))
                 .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
-                .andExpect(jsonPath("$.createdAt").isNumber())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andExpect(jsonPath("$.updatedAt").doesNotExist())
                 .andExpect(jsonPath("$.score", equalTo(score)))
                 .andExpect(jsonPath("$.author").exists());
     }
+
+    @Test
+    @WithMockUser
+    void findAllTest() throws Exception {
+        final String message = "Это рецензия на фильм.";
+        final int score = 10;
+        final UUID cinemaId = UUID.fromString("554f7afd-4bf3-493c-91d9-8677a39aa1b1");
+
+        final ReviewResponse reviewResponse = create(message, score, cinemaId);
+
+        final String urlTemplate = String.format("%s/%s", REVIEW_API_PATH, reviewResponse.getId());
+
+        mockMvc.perform(get(urlTemplate))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo(message)))
+                .andExpect(jsonPath("$.cinemaId", equalTo(cinemaId.toString())))
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
+                .andExpect(jsonPath("$.updatedAt").doesNotExist())
+                .andExpect(jsonPath("$.score", equalTo(score)))
+                .andExpect(jsonPath("$.author").exists());
+    }
+
 
     @Test
     @WithMockUser

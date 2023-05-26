@@ -33,7 +33,6 @@ import static com.shuvi.cinema.common.ResourceConstant.REVIEW_API_PATH;
 public class ReviewController {
 
     private final UserService userService;
-
     private final ReviewService reviewService;
 
     @PreAuthorize("isAuthenticated()")
@@ -62,7 +61,7 @@ public class ReviewController {
         }
 
         // Проверка имеет ли пользователей права администратора.
-        if (user.getRoles().stream().anyMatch((role) -> role.getName().equals("ROLE_ADMIN"))) {
+        if (user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
             reviewService.deleteById(id);
             return;
         }

@@ -1,12 +1,21 @@
 package com.shuvi.cinema.exception.genre;
 
-import com.shuvi.cinema.exception.BaseException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.shuvi.cinema.exception.BaseNotFoundException;
+
+import java.util.UUID;
 
 /**
  * @author Shuvi
  */
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Genre not found.")
-public class GenreNotFound extends BaseException {
+public class GenreNotFound extends BaseNotFoundException {
+    public GenreNotFound(String message) {
+        super(message);
+    }
+
+    private static final String GENRE_WITH_ID_NOT_FOUND = "Genre with id %s not found.";
+
+    public static GenreNotFound createById(UUID id) {
+        return new GenreNotFound(GENRE_WITH_ID_NOT_FOUND.formatted(id));
+    }
+
 }

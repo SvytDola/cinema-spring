@@ -1,12 +1,27 @@
 package com.shuvi.cinema.exception.user;
 
-import com.shuvi.cinema.exception.BaseException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.shuvi.cinema.exception.BaseNotFoundException;
+
+import java.util.UUID;
 
 /**
  * @author Shuvi
  */
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "User not found.")
-public class UserNotFound extends BaseException {
+public class UserNotFound extends BaseNotFoundException {
+
+    public UserNotFound(String message) {
+        super(message);
+    }
+
+    private static final String USER_WITH_ID_NOT_FOUND = "User with id %s not found.";
+    private static final String USER_WITH_USERNAME_NOT_FOUND = "User with username %s not found.";
+
+    public static UserNotFound createById(UUID id) {
+        return new UserNotFound(USER_WITH_ID_NOT_FOUND.formatted(id));
+    }
+
+    public static UserNotFound createByUsername(String username) {
+        return new UserNotFound(USER_WITH_USERNAME_NOT_FOUND.formatted(username));
+    }
+
 }

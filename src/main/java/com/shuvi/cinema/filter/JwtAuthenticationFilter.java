@@ -1,6 +1,5 @@
 package com.shuvi.cinema.filter;
 
-import com.shuvi.cinema.mapper.UserMapper;
 import com.shuvi.cinema.service.api.JwtService;
 import com.shuvi.cinema.service.api.UserService;
 import io.jsonwebtoken.Claims;
@@ -25,7 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @Override
     protected void doFilterInternal(

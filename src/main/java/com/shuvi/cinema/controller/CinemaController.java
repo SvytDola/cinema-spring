@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.UUID;
@@ -71,20 +72,19 @@ public class CinemaController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Запрос на получение всех записей кино.", parameters = {
             @Parameter(name = "start", description = "Номер записи, с которой начинать поиск."),
-            @Parameter(name = "size", description = "Количество записей, которое необходимо вернуть."),
-            @Parameter(name = "genres", description = "Название жанров, по которым будет поиск.")
+            @Parameter(name = "size", description = "Количество записей, которое необходимо вернуть.")
     })
     public List<CinemaResponse> findAll(
-            @RequestParam(defaultValue = "0") int start,
-            @RequestParam(defaultValue = "25") @Positive int size,
-            @Nullable @RequestParam(required = false) List<String> genres) {
+            @RequestParam(defaultValue = "0") @Min(value = 0) int start,
+            @RequestParam(defaultValue = "25") @Max(value = 100) @Positive int size,
+            @RequestParam(required = false) List<String> genres) {
         return cinemaService.findAll(start, size, genres);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Запрос на получение записи по идентификатору.")
-    public CinemaResponse find(@NonNull @PathVariable UUID id) {
+    public CinemaResponse findById(@NonNull @PathVariable UUID id) {
         return cinemaService.findById(id);
     }
 

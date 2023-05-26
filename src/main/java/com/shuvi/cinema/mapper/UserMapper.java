@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Shuvi
@@ -19,9 +20,10 @@ public interface UserMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "password", ignore = true)
     UserEntity toEntity(UserCreateRequest body);
 
     UserResponse toResponse(UserEntity userCreated);
 
-    Collection<UserResponse> toResponseList(Collection<UserEntity> userEntities);
+    List<UserResponse> toResponseList(Collection<UserEntity> userEntities);
 }

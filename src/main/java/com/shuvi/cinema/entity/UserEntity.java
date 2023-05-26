@@ -7,9 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Сущность "Пользователь".
@@ -27,6 +26,7 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue
+    @Column(unique = true, nullable = false)
     private UUID id;
 
     @Column(nullable = false, length = 128, unique = true)
@@ -48,20 +48,20 @@ public class UserEntity implements UserDetails {
     private boolean enabled;
 
     @OneToMany(mappedBy = "author")
-    private Set<ReviewEntity> reviews;
+    private List<ReviewEntity> reviews;
 
     @ManyToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Collection<RoleEntity> roles;
+    private List<RoleEntity> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

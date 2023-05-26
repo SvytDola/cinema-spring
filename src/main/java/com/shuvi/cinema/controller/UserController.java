@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,12 @@ public class UserController {
     @Operation(summary = "Получение информации о пользователе по идентификатору.")
     public UserResponse findById(@NonNull @PathVariable UUID id) {
         return userService.findById(id);
+    }
+
+    @PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление пользователя по идентафикатору.")
+    public void deleteById(@NonNull @PathVariable UUID id) {
+        userService.deleteById(id);
     }
 }

@@ -13,13 +13,13 @@ import java.util.UUID;
 @Data
 public class GenreResponse {
 
-    @Schema(description = "Уникальный идентификатор события")
+    @Schema(description = "Уникальный идентификатор события", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID id;
 
-    @Schema(description = "Уникальное имя жанра")
+    @Schema(description = "Уникальное имя жанра", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Описание жанра")
+    @Schema(description = "Описание жанра", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
 }

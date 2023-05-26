@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import static com.shuvi.cinema.common.ResourceConstant.AUTH_API_PATH;
 
 /**
- * Контроллер API сущности "Cinema".
+ * Контроллер авторизации.
  *
  * @author Shuvi
  */

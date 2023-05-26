@@ -6,7 +6,6 @@ import com.shuvi.cinema.entity.GenreEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -23,6 +22,14 @@ public interface GenreService {
      * @return Информация о созданном событии.
      */
     GenreResponse createGenre(@NonNull GenreCreateRequest createGenreRequest);
+
+    /**
+     * Получить GenreEntity по id.
+     *
+     * @param id Идентификатор жанра.
+     * @return Запись из таблицы жанров.
+     */
+    GenreEntity getById(UUID id);
 
     /**
      * Получить DTO по идентификатору жанра..
@@ -46,7 +53,7 @@ public interface GenreService {
      * @param body Детали жанра.
      * @return Информацию об обновлённом жанре.
      */
-    GenreResponse update(@NonNull UUID id, @NonNull GenreCreateRequest body);
+    GenreResponse updateById(@NonNull UUID id, @NonNull GenreCreateRequest body);
 
     /**
      * Получить список всех жанров.
@@ -61,5 +68,5 @@ public interface GenreService {
      * @param uuids Список идентификаторов.
      * @return Список сущностей "Genre".
      */
-    Set<GenreEntity> findAllByIds(Set<UUID> uuids);
+    List<GenreEntity> findAllByIds(List<UUID> uuids);
 }

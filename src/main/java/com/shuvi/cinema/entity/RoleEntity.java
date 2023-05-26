@@ -4,7 +4,7 @@ package com.shuvi.cinema.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Сущность "Роль".
@@ -32,6 +32,6 @@ public class RoleEntity {
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private Collection<UserEntity> users;
+    private List<UserEntity> users;
 }
 

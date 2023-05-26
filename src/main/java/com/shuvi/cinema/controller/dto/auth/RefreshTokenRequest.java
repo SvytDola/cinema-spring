@@ -16,6 +16,6 @@ public class RefreshTokenRequest {
 
     @NotNull
     @NotBlank
-    @JsonProperty("refresh_token")
+    @JsonProperty(value = "refresh_token", required = true)
     private String refreshToken;
 }
