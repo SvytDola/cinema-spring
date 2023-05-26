@@ -73,4 +73,4 @@ docker-compose up
 
 ## Диаграмма <a id=diagram>
 
-![alt](https://media.discordapp.net/attachments/667019629079560224/1111528489846329354/cinemas.png?width=918&height=978)
+![alt](docs/images/diagram.png)
