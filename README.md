@@ -10,6 +10,7 @@ _⚠️ Данный проект ещё находится на стадии р
 * [Список задач](#tasks)
 * [Конфигурация](#configuration) 
 * [Сборка и запуск](#build) 
+* [ER Диаграмма](#diagram)
 
 
 ## Список задач: <a id=tasks>
@@ -69,3 +70,7 @@ docker-compose up
 ```
 
 ***NOTE:*** _На этом у меня пока всё, всем спасибо._
+
+## Диаграмма <a id=diagram>
+
+![alt](https://media.discordapp.net/attachments/667019629079560224/1111528489846329354/cinemas.png?width=918&height=978)
