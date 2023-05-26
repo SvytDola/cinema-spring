@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 /**
@@ -28,7 +29,8 @@ public class ReviewCreateRequest {
     private UUID cinemaId;
 
     @NotNull
-    @Size(max = 10)
+    @Min(value = 0)
+    @Max(value = 10)
     @JsonProperty(required = true)
     private Integer score;
 }

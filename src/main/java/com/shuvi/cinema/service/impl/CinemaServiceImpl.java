@@ -1,11 +1,13 @@
 package com.shuvi.cinema.service.impl;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.shuvi.cinema.controller.dto.cinema.CinemaCreateRequest;
 import com.shuvi.cinema.controller.dto.cinema.CinemaResponse;
 import com.shuvi.cinema.entity.CinemaEntity;
 import com.shuvi.cinema.entity.GenreEntity;
 import com.shuvi.cinema.exception.cinema.CinemaNotFound;
 import com.shuvi.cinema.mapper.CinemaMapper;
+import com.shuvi.cinema.mapper.factory.CinemaExpressionFactory;
 import com.shuvi.cinema.repository.CinemaRepository;
 import com.shuvi.cinema.service.api.CinemaService;
 import com.shuvi.cinema.service.api.GenreService;
@@ -33,6 +35,7 @@ public class CinemaServiceImpl implements CinemaService {
     private final CinemaMapper cinemaMapper;
     private final GenreService genreService;
     private final CinemaRepository cinemaRepository;
+    private final CinemaExpressionFactory cinemaExpressionFactory;
 
     @Override
     public CinemaResponse create(@NonNull CinemaCreateRequest createCinemaRequest) {
@@ -47,7 +50,8 @@ public class CinemaServiceImpl implements CinemaService {
     @Transactional(readOnly = true)
     public List<CinemaResponse> findAll(int start, int size, @Nullable List<String> genres) {
         final Pageable pageable = PageRequest.of(start, size);
-        final List<CinemaEntity> cinemaEntities = cinemaRepository.findByGenresNameIn(genres, pageable);
+        BooleanExpression booleanExp = cinemaExpressionFactory.getBooleanExp(genres);
+        final List<CinemaEntity> cinemaEntities = cinemaRepository.findAll(booleanExp, pageable).stream().toList();
         return cinemaMapper.toResponseList(cinemaEntities);
     }
 

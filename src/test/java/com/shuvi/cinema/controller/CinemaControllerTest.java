@@ -224,6 +224,5 @@ public class CinemaControllerTest extends BaseIntegrationTest {
                 .andExpect(jsonPath("$.description", equalTo(updatedDescription)))
                 .andExpect(jsonPath("$.duration", equalTo(Math.toIntExact(updatedDuration))))
                 .andExpect(jsonPath("$.genres").isArray());
-
     }
 }

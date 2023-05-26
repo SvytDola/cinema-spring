@@ -27,9 +27,8 @@ public interface CinemaService {
     /**
      * Получить список кино.
      *
-     * @param start  Точка старта откуда начинать брать данные из таблицы.
-     * @param size   Количество записей, которое необходимо получить.
-     * @param genres Список жанров.
+     * @param start Точка старта откуда начинать брать данные из таблицы.
+     * @param size  Количество записей, которое необходимо получить.
      * @return Список кино.
      */
     List<CinemaResponse> findAll(int start, int size, @Nullable List<String> genres);

@@ -29,6 +29,5 @@ public interface GenreMapper {
     @Mapping(target = "cinemas", ignore = true)
     void update(@MappingTarget GenreEntity genreEntityFromDb, GenreEntity genreEntityUpdate);
 
-
     List<GenreResponse> toResponseList(List<GenreEntity> genreEntities);
 }
