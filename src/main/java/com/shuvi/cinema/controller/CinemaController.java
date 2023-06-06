@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,8 +60,7 @@ public class CinemaController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     public CinemaResponse create(
-            @NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest,
-            @NonNull @AuthenticationPrincipal UserDetails principal
+            @NonNull @Valid @RequestBody CinemaCreateRequest createCinemaRequest
     ) {
         return cinemaService.create(createCinemaRequest);
     }
