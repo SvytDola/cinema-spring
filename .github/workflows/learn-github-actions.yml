@@ -6,10 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
-          java-version: '14'
-          distribution: 'adopt'
-          cache: gradle
-      - run: chmod +x mvnw
-      - run: ./mvnw clean compile package
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - run: ./mvnw clean compile test
