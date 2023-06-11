@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Service
 public class JwtServiceImpl implements JwtService {
-    @Value("${JWT_KEY}")
+    @Value("${application.security.jwt.key}")
     private String JWT_KEY;
 
     @Value("${application.security.jwt.token.expiration}")

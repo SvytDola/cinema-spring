@@ -58,12 +58,6 @@ git clone https://github.com/SvytDola/cinema-spring.git
 mvn clean compile package
 ```
 
-Далее необходимо создать образ.
-
-```console
-docker build -t cinema-server .
-```
-
 Затем поднять приложение.
 ```console
 docker-compose up

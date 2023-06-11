@@ -239,3 +239,4 @@ public class GenreControllerTest extends BaseIntegrationTest {
                 .andExpect(jsonPath("$[*].description", containsInAnyOrder(descriptions)));
     }
 }
+
