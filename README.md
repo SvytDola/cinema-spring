@@ -32,6 +32,10 @@ _⚠️ Данный проект ещё находится на стадии р
 ## Конфигурация <a id=configuration>
 Базовая настройка проекта включает в себя добавления файла `env.properties` в корень проекта.
 ```properties
+DB_URL=jdbc:postgresql://postgres:5432/cinema
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+
 # Приватный ключ для jwt авторизации.
 JWT_KEY=3677397A24432646294A404E635266556A586E5A7234753778214125442A472D
 ```
