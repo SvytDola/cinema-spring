@@ -1,9 +1,7 @@
-![](https://media.tenor.com/Vo44NSr2xn8AAAAd/chainsaw-man-anime.gif)
 
-# Rest приложение подборки кино.
-_⚠️ Данный проект перенесён на [gitlab](https://gitlab.com/SvytDola/cinema/)._
+# _⚠️ Данный проект перенесён на [gitlab](https://gitlab.com/SvytDola/cinema/)._
 
-
+## Rest приложение подборки кино.
 ***Цель проекта:*** Реализовать полноценный сервис по поиску фильмов, возможность их оценивать и комментировать.
 
 # Оглавление
