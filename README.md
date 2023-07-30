@@ -63,3 +63,21 @@ docker-compose up
 ## Диаграмма <a id=diagram>
 
 ![alt](docs/images/diagram.png)
+
+
+### Заметки
+```shell
+# пробрасывание на локалхост
+minikube service web-app-service -n default
+
+# просмотр логов
+ kubectl logs
+ 
+# просмотр подов 
+kubectl get po
+
+```
+
+
+
+
